@@ -48,7 +48,6 @@ INSTALLED_APPS = [
 
     'apps.edu.apps.EduConfig',
     'django_filters',
-    'rest_framework',
 
 ]
 

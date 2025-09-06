@@ -1,12 +1,8 @@
 from django.contrib import admin
 from django.urls import path , include
-from rest_framework.routers import SimpleRouter
-from rest_framework_nested import routers
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-router = routers.DefaultRouter()
-# router.register(prefix='Log' , viewset=views.LogViewSet , basename="Log")
 
 
 app_name = 'edu'
