@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Tags{% endblock %}
+{% block body %}
+    <h1>Tag List</h1>
+    <ul>
+        {% for tag in tags %}
+            <li>
+                <a href="{% url 'blog:tag_post_list' tag.slug %}">
+                    <h3>{{ tag.name }}</h3>
+                </a>
+            </li>
+            <hr>
+        {% empty %}
+            <h3>There are no tag on the site now</h3>
+        {% endfor %}
+    </ul>
+{% endblock %}

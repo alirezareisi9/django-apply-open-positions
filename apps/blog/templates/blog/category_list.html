@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Categories{% endblock %}
+{% block body %}
+    <h1>Category List</h1>
+    <ul>    
+        {% for category in category_list %}
+            <li>
+                <a href="{{ category.get_absolute_url }}">
+                        <img src="{{ category.image.url }}" width="200px">
+                        <h3>{{ category.title }}</h3>
+                    {% with content=category.description %}
+                        <span>{{ content|truncatechars:20 }}</span>
+                    {% endwith %}
+                    <p>created at: {{ category.created_at }}</p>
+                </a>
+            </li>
+            <hr>
+        {% empty %}
+            <h3>There are no category on the site now</h3>
+        {% endfor %}
+    </ul>
+{% endblock %}

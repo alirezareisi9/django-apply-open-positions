@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - 8000:8000
+    depends_on:
+    - db
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      DB_URL: postgres://db/project
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: apply
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345678
+    ports:
+      - 27017:27017
+    volumes:
+      - postgresdata:/data/db
+    
+    # depends_on:
+    #   - backend
+volumes:
+  postgresdata:

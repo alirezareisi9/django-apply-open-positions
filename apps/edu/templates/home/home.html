@@ -1,0 +1,21 @@
+{%extends 'main.html' %}
+{%block title%}
+Home
+{%endblock%}
+{%block body%}
+
+
+<h1>meow page</h1>-
+<form method="GET" action="{%url 'edu:home' %}">
+    {{ form.as_p }}
+    <input type="submit" value="Submit" class="btn btn-primary" />
+</form>
+
+{% for items in university %}
+
+<a href="{%url 'edu:detail' items.id%}">
+<h4>{{items.name}}:</h4>
+</a>
+<img src="{{items.images.url}}" style="width: 300px; height: 300px;">
+{%endfor%}
+{%endblock%}

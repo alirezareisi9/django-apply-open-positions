@@ -1,0 +1,7 @@
+{% if messages %}
+{% for item in messages %}
+<div {% if item.tags %} class="alert alert-{{item.tags}} alert-dismissible fade show" role="alert" {%endif%}>
+    {{ item }}
+  </div>
+{% endfor %}
+{% endif %}
