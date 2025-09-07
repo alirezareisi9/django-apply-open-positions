@@ -1,28 +1,40 @@
-version: "3.8"
+version: '3.9'
+
 services:
-  backend:
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    ports: 
-      - 8000:8000
-    depends_on:
-    - db
+  django:
+    build: .
+    container_name: django_web
     command: python manage.py runserver 0.0.0.0:8000
-    environment:
-      DB_URL: postgres://db/project
-  db:
-    image: postgres:13
-    environment:
-      POSTGRES_DB: apply
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12345678
-    ports:
-      - 27017:27017
     volumes:
-      - postgresdata:/data/db
-    
-    # depends_on:
-    #   - backend
+      - .:/code
+    ports:
+      - "8000:8000"  
+    depends_on:
+      - db
+    # environment:
+    #   POSTGRES_DB: ${POSTGRES_DB}
+    #   POSTGRES_USER: ${POSTGRES_USER}
+    #   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    #   DB_HOST: ${DB_HOST}
+    #   DB_PORT: ${DB_PORT}
+    env_file:
+      - .env
+
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      # There is a location which is /var/lib/docker/... in your local machine
+      #  which store postgresdata but also it mounts to 
+      #  /var/lib/postgresql/data/ to manage consistently between container
+      #  and local machine. means it is persistent if container removed or
+      #  stopped
+    # environment:
+    #   POSTGRES_DB: ${POSTGRES_DB}
+    #   POSTGRES_USER: ${POSTGRES_USER}
+    #   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    env_file:
+      - .env
+
 volumes:
-  postgresdata:
+  postgres_data:

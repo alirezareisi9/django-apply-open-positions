@@ -8,9 +8,20 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
+
+for run docker container in interactive command on 0.0.0.0:8000
+    docker compose run --rm -p 8000:8000 web python3 manage.py runserver 0.0.0.0:8000
+
+for run dbshell for postgres
+    docker exec -it <postgres_container_name> psql -U <db_user> -d <db_name>
+
+for updating your local requirements.txt
+    docker run --rm <djangoimage> pip freeze > requirements.txt
+
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,13 +31,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@1+sg=4*ay%cj_anr4@o1bvdvs2784o((g-!wj7t#o_g)s05ft'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost 127.0.0.1").split()
 
 # Application definition
 
@@ -38,16 +48,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Third-party
+    'taggit',
+    'ckeditor',
+    'ckeditor_uploader',
+    'django_filters',
+
+    # Modules
     'apps.accounts.apps.AccountsConfig',
     'apps.blog.apps.BlogConfig',
-    'taggit',  # pip install django-taggit
-    # 'taggit_templatetags',  # pip install django-taggit-templatetags
-    'ckeditor',
-    'ckeditor_uploader',  # pip install django-ckeditor --upgrade
-
-
     'apps.edu.apps.EduConfig',
-    'django_filters',
 
 ]
 
@@ -91,8 +101,12 @@ WSGI_APPLICATION = 'apply.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("POSTGRES_DB"),
+        'USER': os.environ.get("POSTGRES_USER"),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
+        'HOST': os.environ.get("DB_HOST"),
+        'PORT': os.environ.get("DB_PORT")
     }
 }
 
@@ -128,8 +142,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-import os
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
@@ -140,12 +152,12 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Media files
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Taggit settings
 
