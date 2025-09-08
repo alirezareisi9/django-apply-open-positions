@@ -1,28 +1,49 @@
 from django.contrib.auth.base_user import BaseUserManager
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from . import models
+
 
 
 class CustomUserManager(BaseUserManager):
 
-    use_in_migrations = True
+    use_in_migrations = True  # True by default on BaseUserManager
+    # Set it False -> use default django manager model in migrations 
+    #  which break your instance creation logic
 
     def _create_user(self, email, password=None, **extra_fields):
-        required_register_fields = self.model.REQUIRED_FIELDS
-        email_value = self.model.USERNAME_FIELD
 
-        if not email_value:
-                raise ValueError('Fill out required fields!')
+        if not email:
+                raise ValueError(f'Fill out email field!')
 
-        for field in required_register_fields:
-            if not field:
-                raise ValueError('Fill out required fields!')
+        if self.model.REQUIRED_FIELDS :
+            required = iter(self.model.REQUIRED_FIELDS)
+            for field in required:
+                if not extra_fields.get(field):
+                    raise ValueError(f'Fill out {field} fields!')
         
+        # Just normalize email and don't validating it
+        email = self.normalize_email(email) 
+        # "weird@local@domain.com".rsplit("@", 1)  :
+        #  rightsplit(separator, maxsplit)
+        # → ["weird@local", "domain.com"]
+
         
-        email = self.normalize_email(email)
+        # Validate email
+        try:
+            validate_email(email)
+        except ValidationError as e:
+            print("Email validation failed:", e)
+
 
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
+        # Without using=self._db:
+        # user.save() would default to the "default" database.
+        # But if your manager/queryset came from a non-default database,
+        # the object might accidentally be saved 
+        #  to the wrong database(default db)
 
         return user
     
