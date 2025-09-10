@@ -11,60 +11,58 @@ from . import models
 
 
 def test(request):
-    return HttpResponse('worked successfully!')
+    return HttpResponse("worked successfully!")
 
 
 class RegisterAuthView(CreateView):
-
     form_class = forms.RegisterForm
-    template_name = 'registration/register.html'
-    
+    template_name = "registration/register.html"
+
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data(**kwargs)  # super return kwargs
-        
-        if 'form' not in kwargs:
-            kwargs['form'] = self.get_form()
+
+        if "form" not in kwargs:
+            kwargs["form"] = self.get_form()
         return kwargs
-    
+
     def get_success_url(self) -> str:
-        return reverse_lazy('accounts:login')
+        return reverse_lazy("accounts:login")
 
 
 class LoginAuthView(LoginView):
-    
     form_class = AuthenticationForm
-    template_name = 'registration/login.html'
-    
+    template_name = "registration/login.html"
+
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data(**kwargs)
-        
-        if 'form' not in kwargs:
-            kwargs['form'] = self.get_form()
+
+        if "form" not in kwargs:
+            kwargs["form"] = self.get_form()
         return kwargs
 
     def form_valid(self, form: AuthenticationForm) -> HttpResponse:
         response = super().form_valid(form)
-        
-        messages.success(self.request, f'Welcome {self.request.user}!')
+
+        messages.success(self.request, f"Welcome {self.request.user}!")
         return response
-    
+
     def get_success_url(self) -> str:
-        return reverse_lazy('/')
+        return reverse_lazy("/")
 
 
 class LogoutAuthView(View):
     def get(self, request, *args, **kwargs):
         logout(self.request)
-        
-        messages.success(self.request, 'successfully logout!')
-        return redirect('accounts:login')
+
+        messages.success(self.request, "successfully logout!")
+        return redirect("accounts:login")
 
 
 class ChangePasswordAuthView(PasswordChangeView):
-    template_name = 'registration/change_password.html'
-    success_url = reverse_lazy('accounts:change_password_done')
+    template_name = "registration/change_password.html"
+    success_url = reverse_lazy("accounts:change_password_done")
 
 
 class ChangePasswordDoneView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'registration/change_password_done.html')
+        return render(request, "registration/change_password_done.html")

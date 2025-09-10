@@ -13,7 +13,7 @@ admin.site.register(Professor)
     #     verbose_name_plural = "universities"
 admin.site.register(Courses)
 admin.site.register(Major)
-
+admin.site.register(Field)
 
 admin.site.register(University)
 

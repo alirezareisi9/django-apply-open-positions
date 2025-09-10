@@ -9,4 +9,4 @@ class UniFilter(filters.FilterSet):
 class ProfFilter(filters.FilterSet):
     class Meta:
         model = Professor
-        fields = {"name":['icontains'] , "major": ['exact'], "awards_and_honors":['icontains']}
+        fields = {"last_name":['icontains'] , "major": ['exact'], "awards_and_honors":['icontains']}

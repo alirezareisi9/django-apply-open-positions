@@ -210,7 +210,7 @@ __marimo__/
 
 # --------------------------------------------------Manual items--------------
 .env
-
+.ruff_cache/
 
 # ------------
 __pycache__/
@@ -250,3 +250,4 @@ postgres_data/
 *.log
 *.gz
 docker-compose.override.yml
+

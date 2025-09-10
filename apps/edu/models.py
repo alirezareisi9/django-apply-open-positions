@@ -16,15 +16,20 @@ from django.db import models
 
     
 class Major(models.Model):
-    name = models.CharField(max_length=100)
     title = models.CharField(max_length=500)
     def __str__(self):
-        return self.name
+        return self.title
+    
 
+class Field(models.Model):
+    title = models.CharField(max_length=500)
+    major = models.ForeignKey(Major, on_delete=models.CASCADE, related_name='fields')
+    def __str__(self):
+        return self.title
 
 class Professor(models.Model):  
-    name = models.CharField(max_length=100)
-    title = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     institution = models.CharField(max_length=100)
     department = models.CharField(max_length=100)
     email = models.EmailField()
@@ -44,7 +49,7 @@ class Professor(models.Model):
     major = models.ManyToManyField("major")
     course = models.ManyToManyField("courses" , related_name="profcourses+")
     def __str__(self):
-        return self.name
+        return self.first_name + " " + self.last_name
 
                  
 class Courses(models.Model):
@@ -54,7 +59,6 @@ class Courses(models.Model):
         BACHELORS = 'BACHELORS'
         MASTERS = 'MASTERS'
         PHD = 'PHD'
-    name = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     major = models.ManyToManyField(Major, blank=True)
     studylevel = models.CharField( max_length=9,choices=StudyLevelChoices.choices)
