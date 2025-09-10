@@ -13,7 +13,8 @@ class AuthenticationMiddleware:
 
         if request.path not in open_paths:
             if not request.user.is_authenticated:
-                return redirect("accounts:login")
+                # return redirect("accounts:login")
+                pass
 
         response = self.get_response(request)
         return response

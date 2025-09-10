@@ -1,3 +1,4 @@
+import random
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm
@@ -6,17 +7,13 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.views.generic import CreateView, View
 from django.urls import reverse_lazy
 from django.http import response
+from django.core.mail import EmailMessage
 from . import forms
 from . import models
 
 
-def test(request):
-    return HttpResponse("worked successfully!")
-
-
-class RegisterAuthView(CreateView):
+class RegisterView(CreateView):
     form_class = forms.RegisterForm
-    template_name = "registration/register.html"
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data(**kwargs)  # super return kwargs
@@ -25,8 +22,29 @@ class RegisterAuthView(CreateView):
             kwargs["form"] = self.get_form()
         return kwargs
 
+    def form_valid(self, form):
+        
+        user = form.save(commit=False)
+        code = random.randint(100000, 999999)
+        user.verification_code = code
+        
+        user.set_password(user.password)
+        user.save()
+
+        email = EmailMessage(
+            subject='Hima Registration Verification Code',
+            body=f'Verification Code : {user.verification_code}',
+            from_email='verification<hima.sport.org@gmail.com>',
+            to=[user.email]
+        )
+
+        email.send(fail_silently=False)
+        return super().form_valid(form)
+
     def get_success_url(self) -> str:
         return reverse_lazy("accounts:login")
+
+
 
 
 class LoginAuthView(LoginView):

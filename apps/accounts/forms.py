@@ -8,10 +8,6 @@ class RegisterForm(UserCreationForm):
         model = models.CustomUser
         fields = [
             "email",
-            "first_name",
-            "last_name",
-            "major",
-            "field",
         ]
 
 
