@@ -48,7 +48,10 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ("last_name", "email")
     ordering = ("-id",)
     readonly_fields = ("date_joined",)
-    raw_id_fields = ('major', 'field',)
+    raw_id_fields = (
+        "major",
+        "field",
+    )
 
     def get_form(self, request, obj, change, **kwargs):
         not_accessible_msg = _("It initializes automatically")

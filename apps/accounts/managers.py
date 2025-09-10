@@ -26,12 +26,6 @@ class CustomUserManager(BaseUserManager):
         #  rightsplit(separator, maxsplit)
         # → ["weird@local", "domain.com"]
 
-        # Validate email
-        try:
-            validate_email(email)
-        except ValidationError as e:
-            print(_("Email validation failed:", e))
-
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
