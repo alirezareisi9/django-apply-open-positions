@@ -10,27 +10,14 @@ urlpatterns = [
         views.RegisterView.as_view(template_name="registration/register.html"),
         name="register",
     ),
-    # path(
-    #     "register/verification/<uuid:uid>/",
-    #     views.RegisterVerificationView.as_view(
-    #         template_name="registration/register_verification.html"
-    #     ),
-    #     name="register-verification",
-    # ),
+    path(
+        "register/verification/<uuid:uid>/",
+        views.RegisterVerificationView.as_view(
+            template_name="registration/register_verification.html"
+        ),
+        name="register-verification",
+    ),
 ]
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #     path("login/", django_views.LoginView.as_view(), name="login"),
