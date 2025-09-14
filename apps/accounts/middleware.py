@@ -9,15 +9,28 @@ class CustomAuthenticationMiddleware:
     def __call__(self, request):
         open_paths = [
             # accounts
-            reverse('accounts:login'),
-            reverse('accounts:register'),
-            reverse('accounts:register-verification'),
-            reverse('accounts:reset-password'),
-            reverse('accounts:reset-password-sent'),
-            reverse('accounts:reset-password-confirm'),
-            reverse('accounts:reset-password-complete'),
+            '/accounts/login/',
+            '/accounts/register/',
+            '/accounts/register/verification/',
+            '/accounts/reset-password/',
+            '/accounts/reset-password-sent/',
+            '/accounts/reset-password-complete/'
+            
             # admin
-            reverse('admin:login'),
+            '/admin/login/'
+            
+            
+            
+             # accounts
+            # reverse('accounts:login'),
+            # reverse('accounts:register'),
+            # reverse('accounts:register-verification'),
+            # reverse('accounts:reset-password'),
+            # reverse('accounts:reset-password-sent'),
+            # reverse('accounts:reset-password-confirm'),
+            # reverse('accounts:reset-password-complete'),
+             # admin
+            # reverse('admin:login'),
         ]
 
         if not any(request.path.startswith(path) for path in open_paths):
