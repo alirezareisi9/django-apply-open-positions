@@ -1,20 +1,27 @@
 from django.shortcuts import redirect
+from django.urls import reverse
 
 
-class AuthenticationMiddleware:
-    def __init__(self, get_response) -> None:
+class CustomAuthenticationMiddleware:
+    def __init__(self, get_response):
         self.get_response = get_response
 
-    def __call__(self, request, *args, **kwds):
+    def __call__(self, request):
         open_paths = [
-            "/login/",
-            "/register/",
+            # accounts
+            reverse('accounts:login'),
+            reverse('accounts:register'),
+            reverse('accounts:register-verification'),
+            reverse('accounts:reset-password'),
+            reverse('accounts:reset-password-sent'),
+            reverse('accounts:reset-password-confirm'),
+            reverse('accounts:reset-password-complete'),
+            # admin
+            reverse('admin:login'),
         ]
 
-        if request.path not in open_paths:
+        if not any(request.path.startswith(path) for path in open_paths):
             if not request.user.is_authenticated:
-                # return redirect("accounts:login")
-                pass
+                return redirect("accounts:login")
 
-        response = self.get_response(request)
-        return response
+        return self.get_response(request)
