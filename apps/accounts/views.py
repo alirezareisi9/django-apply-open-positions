@@ -92,7 +92,7 @@ class RegisterVerificationView(FormView):
 
         user.regenerate_uuid()
 
-        user.verified = True
+        user.is_active = True
         user.save()
 
         login(self.request, user)
@@ -203,6 +203,7 @@ class ResetPasswordConfirmView(FormView):
         user.set_password(password)
         user.regenerate_uuid()
 
+        user.is_active = True
         user.save()
 
         return super().form_valid(form)

@@ -21,7 +21,6 @@ class CustomUser(AbstractUser):
         Field, on_delete=models.PROTECT, blank=True, null=True, related_name="users"
     )
     verification_code = models.CharField(max_length=6, blank=True, null=True)
-    verified = models.BooleanField(default=False)
 
     last_login = None
     username = None
