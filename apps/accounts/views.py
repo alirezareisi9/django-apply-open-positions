@@ -41,6 +41,7 @@ class RegisterView(CreateView):
 
         validate_email(user.email)
 
+        user.is_active = False
         user.set_password(user.password)
         user.save()
 
@@ -52,7 +53,7 @@ class RegisterView(CreateView):
             from_email="verification<volleyalireza@gmail.com>",
             to=[user.email],
         )
-
+        
         email.send(fail_silently=False)
 
         return super().form_valid(form)

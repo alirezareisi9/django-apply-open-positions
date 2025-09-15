@@ -36,7 +36,7 @@ class CustomUserTests(TestCase):
 
         self.assertEqual(user.date_joined.date(), datetime.date.today())
 
-        self.assertTrue(user.is_active)
+        self.assertFalse(user.is_active)
         self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
 
