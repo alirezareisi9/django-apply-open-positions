@@ -5,47 +5,70 @@ from . import views
 
 app_name = "accounts"
 urlpatterns = [
-    path("test/", views.test, name="test"),
-    path("register/", views.RegisterAuthView.as_view(), name="register"),
-    path("login/", django_views.LoginView.as_view(), name="login"),
-    path("logout/", views.LogoutAuthView.as_view(), name="logout"),
+    path("", views.test, name="test"),
     path(
-        "change_password/",
-        views.ChangePasswordAuthView.as_view(),
-        name="change_password",
+        "register/",
+        views.RegisterView.as_view(template_name="registration/register.html"),
+        name="register",
     ),
     path(
-        "change_password_done/",
+        "register/verification/<uuid:uid>/",
+        views.RegisterVerificationView.as_view(
+            template_name="registration/register_verification.html"
+        ),
+        name="register-verification",
+    ),
+    path(
+        "login/",
+        views.LoginView.as_view(template_name="registration/login.html"),
+        name="login",
+    ),
+    path(
+        "logout/",
+        views.LogoutView.as_view(),
+        name="logout",
+    ),
+    path(
+        "update-profile/",
+        views.UpdateProfileView.as_view(
+            template_name="registration/update_profile.html"
+        ),
+        name="update-profile",
+    ),
+    path(
+        "change-password/",
+        views.ChangePasswordView.as_view(
+            template_name="registration/change_password.html"
+        ),
+        name="change-password",
+    ),
+    path(
+        "change-password-done/",
         views.ChangePasswordDoneView.as_view(),
-        name="change_password_done",
+        name="change-password-done",
     ),
-    # if you wanna use reset password option so should set SMTP configuration on settings.py
     path(
-        "reset_password/",
-        django_views.PasswordResetView.as_view(
+        "reset-password/",
+        views.ResetPasswordView.as_view(
             template_name="registration/reset_password.html"
         ),
-        name="reset_password",
+        name="reset-password",
     ),
     path(
-        "reset_password_sent/",
-        django_views.PasswordChangeDoneView.as_view(
-            template_name="registration/reset_password_sent.html"
-        ),
-        name="password_reset_done",
+        "reset-password-sent/",
+        views.ResetPasswordSentView.as_view(),
+        name="reset-password-sent",
     ),
     path(
-        "reset/<uidb64>/<token>/",
-        django_views.PasswordResetConfirmView.as_view(
+        "reset-password/<uuid:uid>/",
+        views.ResetPasswordConfirmView.as_view(
             template_name="registration/reset_password_confirm.html"
         ),
-        name="password_reset_confirm",
+        name="reset-password-confirm",
     ),
     path(
-        "reset_password_complete/",
-        django_views.PasswordResetCompleteView.as_view(
-            template_name="registration/reset_password_complete.html"
-        ),
-        name="password_reset_complete",
+        "reset-password-complete/",
+        views.ResetPasswordCompleteView.as_view(),
+        name="reset-password-complete",
     ),
 ]
