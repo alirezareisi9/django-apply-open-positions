@@ -69,23 +69,27 @@ class LoginLogoutLogicTests(TestCase):
         self.assertEqual(self.response.status_code, 200)
 
     def test_login_redirect_to_success_page(self):
-        self.assertRedirects(self.response, reverse('accounts:test'))
+        self.assertRedirects(self.response, reverse("accounts:test"))
 
     def test_login_correctly(self):
-        self.response = self.client.get(reverse('accounts:test'))
+        self.response = self.client.get(reverse("accounts:test"))
 
         self.assertEqual(self.response.status_code, 200)
 
     def test_logout_redirect_to_success_page(self):
-        self.response = self.client.get(reverse('accounts:logout'), follow=True)
+        self.response = self.client.get(reverse("accounts:logout"), follow=True)
 
-        self.assertRedirects(self.response, reverse('accounts:login'))
-    
+        self.assertRedirects(self.response, reverse("accounts:login"))
+
     def test_logout_correctly(self):
-        self.response = self.client.get(reverse('accounts:logout'))
+        self.response = self.client.get(reverse("accounts:logout"))
 
-        self.response = self.client.get(reverse('accounts:test'), follow=True)  # Redirects to login
-        self.assertRedirects(self.response,reverse('accounts:login'), status_code=302, target_status_code=200)
-
-
-        
+        self.response = self.client.get(
+            reverse("accounts:test"), follow=True
+        )  # Redirects to login
+        self.assertRedirects(
+            self.response,
+            reverse("accounts:login"),
+            status_code=302,
+            target_status_code=200,
+        )

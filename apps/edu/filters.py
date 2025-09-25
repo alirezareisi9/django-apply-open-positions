@@ -5,8 +5,21 @@ from .models import *
 class UniFilter(filters.FilterSet):
     class Meta:
         model = University
-        fields = {"name":['icontains'] , "scholarships":['exact'],"price": ['lt' , 'gt'], "courses":['exact'] , "majors":['exact'] , "location":['iexact']}
+        fields = {
+            "name": ["icontains"],
+            "scholarships": ["exact"],
+            "price": ["lt", "gt"],
+            "courses": ["exact"],
+            "majors": ["exact"],
+            "location": ["iexact"],
+        }
+
+
 class ProfFilter(filters.FilterSet):
     class Meta:
         model = Professor
-        fields = {"last_name":['icontains'] , "major": ['exact'], "awards_and_honors":['icontains']}
+        fields = {
+            "last_name": ["icontains"],
+            "major": ["exact"],
+            "awards_and_honors": ["icontains"],
+        }
