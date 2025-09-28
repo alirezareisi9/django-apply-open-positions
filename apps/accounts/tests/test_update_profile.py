@@ -45,7 +45,7 @@ class UpdateProfileViewTests(TestCase):
         response = self.client.get(self.update_profile_url)
         self.assertNotContains(response, "Hi there! I should not be on the page.")
 
-    def test_register_url_resolves_registerview(self):
+    def test_update_profile_url_resolves_update_profile_view(self):
         view = resolve(self.update_profile_url)
         self.assertEqual(view.func.__name__, UpdateProfileView.as_view().__name__)
 
@@ -76,9 +76,9 @@ class UpdateProfileLogicTests(TestCase):
             {
                 "email": self.user.email,
                 "first_name": self.first_name,
-                "last_name": '',
-                "major": '',
-                "field": '',
+                "last_name": "",
+                "major": "",
+                "field": "",
             },
             follow=True,
         )
