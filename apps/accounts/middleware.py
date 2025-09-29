@@ -14,7 +14,7 @@ class CustomAuthenticationMiddleware:
             "/accounts/register/verification/",
             "/accounts/reset-password/",
             "/accounts/reset-password-sent/",
-            "/accounts/reset-password-complete/"
+            "/accounts/reset-password-complete/",
             # admin
             "/admin/login/",
             # accounts
