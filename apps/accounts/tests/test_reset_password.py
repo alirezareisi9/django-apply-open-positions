@@ -141,7 +141,7 @@ class ResetPasswordLogicTests(TestCase):
     def test_password_reset_correctly(self):
         response = self.client.post(
             reverse("accounts:reset-password-confirm", kwargs={"uid": self.user.uid}),
-            {"password1": self.password2, "password2": self.password2},
+            {"new_password1": self.password2, "new_password2": self.password2},
             follow=True,
         )
         self.assertRedirects(response, reverse("accounts:reset-password-complete"))
