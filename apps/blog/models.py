@@ -6,13 +6,13 @@ from taggit.managers import TaggableManager
 from taggit.models import TagBase, GenericTaggedItemBase
 
 
-class CategoryModel(models.Model):
+class Category(models.Model):
     parent_category = models.ForeignKey(
         "self",
         blank=True,
         null=True,
         on_delete=models.CASCADE,
-        related_name="rel_sub_category",
+        related_name="child_categories",
     )
     title = models.CharField(max_length=250)
     slug = models.SlugField(unique=True)
@@ -39,8 +39,8 @@ class CategoryModel(models.Model):
         return reverse("blog:category_detail", kwargs={"slug": self.slug})
 
 
-class PostModel(models.Model):
-    category = models.ManyToManyField("CategoryModel", related_name="rel_post_category")
+class Post(models.Model):
+    categories = models.ManyToManyField("Category", related_name="posts")
     title = models.CharField(max_length=250)
     slug = models.SlugField(unique=True)
     image = models.ImageField(upload_to="posts")

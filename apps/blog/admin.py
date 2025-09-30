@@ -1,10 +1,12 @@
 from typing import Any
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 from . import models
 
 
-@admin.register(models.CategoryModel)
+@admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
+    model = models.Category
     fieldsets = [
         (
             "Main",
@@ -15,6 +17,7 @@ class CategoryAdmin(admin.ModelAdmin):
                     "image",
                     "description",
                     "parent_category",
+                    "is_sub_category",
                     "created_at",
                     "updated_at",
                 ]
@@ -34,11 +37,6 @@ class CategoryAdmin(admin.ModelAdmin):
         "parent_category",
     ]
 
-    readonly_fields = [
-        "created_at",
-        "updated_at",
-    ]
-
     search_fields = [
         "title",
         "created_at",
@@ -50,19 +48,20 @@ class CategoryAdmin(admin.ModelAdmin):
         "parent_category",
     ]
 
-    def get_form(
-        self, request: Any, obj: Any | None = ..., change: bool = ..., **kwargs: Any
-    ) -> Any:
-        help_text_fields = "It initializes automatically"
+    readonly_fields = ['is_sub_category', 'created_at', 'updated_at']
+    
+    def get_form(self, request, obj, change, **kwargs):
+        not_accessible_msg = _("It initializes automatically")
         help_texts = {
-            "created_at": help_text_fields,
-            "updated_at": help_text_fields,
+            "is_sub_category": not_accessible_msg,
+            "created_at": not_accessible_msg,
+            "updated_at": not_accessible_msg,
         }
         kwargs.update({"help_texts": help_texts})
-        return super().get_form(self, obj=obj, change=change, **kwargs)
+        return super().get_form(request=request, obj=obj, change=change, **kwargs)
 
 
-@admin.register(models.PostModel)
+@admin.register(models.Post)
 class PostAdmin(admin.ModelAdmin):
     fieldsets = [
         (
@@ -71,10 +70,8 @@ class PostAdmin(admin.ModelAdmin):
                 "fields": [
                     "title",
                     "slug",
-                    "category",
+                    "categories",
                     "image",
-                    "created_at",
-                    "updated_at",
                 ],
             },
         ),
@@ -84,29 +81,35 @@ class PostAdmin(admin.ModelAdmin):
                 "fields": ["content", "tags"],
             },
         ),
+        (
+            "Log",
+            {
+                "fields": [
+                    "created_at",
+                    "updated_at",
+                ]
+            }
+        )
     ]
 
     list_display = [
         "title",
         "created_at",
     ]  # cannot set a value to manytomanyfield or reverse foreign key
+    
     list_filter = [
         "created_at",
         "updated_at",
-        "category",
+        "categories",
     ]
+    
     list_display_links = [
         "title",
     ]
 
-    readonly_fields = [
-        "created_at",
-        "updated_at",
-    ]
-
     search_fields = [
         "title",
-        "category",
+        "categories",
         "content",
         "created_at",
     ]
@@ -119,16 +122,19 @@ class PostAdmin(admin.ModelAdmin):
     }
 
     raw_id_fields = (
-        "category",
+        "categories",
     )  # Makes a situation for us to search and check categories with details
 
-    def get_form(
-        self, request: Any, obj: Any | None = ..., change: bool = ..., **kwargs: Any
-    ) -> Any:
-        help_text_fields = "It initializes automatically"
+    readonly_fields = [
+        "created_at",
+        "updated_at",
+    ]
+
+    def get_form(self, request, obj, change, **kwargs):
+        not_accessible_msg = _("It initializes automatically")
         help_texts = {
-            "created_at": help_text_fields,
-            "updated_at": help_text_fields,
+            "created_at": not_accessible_msg,
+            "updated_at": not_accessible_msg,
         }
         kwargs.update({"help_texts": help_texts})
-        return super().get_form(self, obj=obj, change=change, **kwargs)
+        return super().get_form(request=request, obj=obj, change=change, **kwargs)

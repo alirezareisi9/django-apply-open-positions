@@ -8,14 +8,14 @@ from . import models
 
 
 class PostList(ListView):
-    model = models.PostModel
+    model = models.Post
 
     paginate_by = 12
 
     context_object_name = "post_list"
 
     def get_queryset(self) -> QuerySet[Any]:
-        queryset = models.PostModel.objects.all().order_by("-created_at")
+        queryset = models.Post.objects.all().order_by("-created_at")
         tag_slug = self.kwargs.get("slug")
         if tag_slug:
             tag = get_object_or_404(TaggitModels.Tag, slug=tag_slug)
@@ -32,7 +32,7 @@ class PostList(ListView):
 
 
 class PostDetail(DetailView):
-    model = models.PostModel
+    model = models.Post
 
     context_object_name = "post"
 
@@ -46,7 +46,7 @@ class PostDetail(DetailView):
 
 
 class CategoryList(ListView):
-    model = models.CategoryModel
+    model = models.Category
     queryset = model.objects.all().order_by("-created_at")
 
     paginate_by = 12
@@ -55,7 +55,7 @@ class CategoryList(ListView):
 
 
 class CategoryDetail(DetailView):
-    model = models.CategoryModel
+    model = models.Category
 
     context_object_name = "category"
 
