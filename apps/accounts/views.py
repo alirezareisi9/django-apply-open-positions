@@ -53,7 +53,7 @@ class RegisterView(CreateView):
             from_email="verification<volleyalireza@gmail.com>",
             to=[user.email],
         )
-        
+
         email.send(fail_silently=False)
 
         return super().form_valid(form)
@@ -121,7 +121,7 @@ class LogoutView(View):
     def get(self, request, *args, **kwargs):
         logout(self.request)
 
-        return redirect("accounts:test")
+        return redirect("accounts:login")
 
 
 class UpdateProfileView(UpdateView):

@@ -9,19 +9,15 @@ class CustomAuthenticationMiddleware:
     def __call__(self, request):
         open_paths = [
             # accounts
-            '/accounts/login/',
-            '/accounts/register/',
-            '/accounts/register/verification/',
-            '/accounts/reset-password/',
-            '/accounts/reset-password-sent/',
-            '/accounts/reset-password-complete/'
-            
+            "/accounts/login/",
+            "/accounts/register/",
+            "/accounts/register/verification/",
+            "/accounts/reset-password/",
+            "/accounts/reset-password-sent/",
+            "/accounts/reset-password-complete/",
             # admin
-            '/admin/login/'
-            
-            
-            
-             # accounts
+            "/admin/login/",
+            # accounts
             # reverse('accounts:login'),
             # reverse('accounts:register'),
             # reverse('accounts:register-verification'),
@@ -29,7 +25,7 @@ class CustomAuthenticationMiddleware:
             # reverse('accounts:reset-password-sent'),
             # reverse('accounts:reset-password-confirm'),
             # reverse('accounts:reset-password-complete'),
-             # admin
+            # admin
             # reverse('admin:login'),
         ]
 

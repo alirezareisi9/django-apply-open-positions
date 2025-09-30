@@ -9,11 +9,10 @@ admin.site.register(Professor)
 #         verbose_name_plural = "Courses"
 # class UniversityAdmin():
 #     model = University
-    # class Meta:
-    #     verbose_name_plural = "universities"
+# class Meta:
+#     verbose_name_plural = "universities"
 admin.site.register(Courses)
 admin.site.register(Major)
 admin.site.register(Field)
 
 admin.site.register(University)
-

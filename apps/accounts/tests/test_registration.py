@@ -35,16 +35,15 @@ class RegisterVerificationViewTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.email = "test@gmail.com"
-        cls.password1 = "qwertyuiop12345678"
-        cls.password2 = "qwertyuiop12345678"
+        cls.password = "qwertyuiop12345678"
 
     def setUp(self):
         self.response = self.client.post(
             reverse("accounts:register"),
             {
                 "email": self.email,
-                "password1": self.password1,
-                "password2": self.password2,
+                "password1": self.password,
+                "password2": self.password,
             },
             follow=True,
         )
@@ -80,16 +79,15 @@ class RegistrationLogicTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.email = "test@gmail.com"
-        cls.password1 = "qwertyuiop12345678"
-        cls.password2 = "qwertyuiop12345678"
+        cls.password = "qwertyuiop12345678"
 
     def setUp(self):
         self.response = self.client.post(
             reverse("accounts:register"),
             {
                 "email": self.email,
-                "password1": self.password1,
-                "password2": self.password2,
+                "password1": self.password,
+                "password2": self.password,
             },
             follow=True,
         )
