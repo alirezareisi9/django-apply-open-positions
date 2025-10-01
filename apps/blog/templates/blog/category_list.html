@@ -3,7 +3,7 @@
 {% block body %}
     <h1>Category List</h1>
     <ul>    
-        {% for category in category_list %}
+        {% for category in categories %}
             <li>
                 <a href="{{ category.get_absolute_url }}">
                         <img src="{{ category.image.url }}" width="200px">

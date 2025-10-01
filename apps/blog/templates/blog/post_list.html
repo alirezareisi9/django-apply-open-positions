@@ -3,11 +3,7 @@
 {% block body %}
     <h1>Post List</h1>
     <ul>
-        {% if tag %}
-            <h2>posts related to: #{{ tag.name }}</h2>
-            <hr>
-        {% endif %}
-        {% for post in post_list %}
+        {% for post in posts %}
             <li>
                 <a href="{{ post.get_absolute_url }}">
                     <img src="{{ post.image.url }}" width="200px">
