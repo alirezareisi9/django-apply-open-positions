@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Tag Details{% endblock %}
+{% block body %}
+<div>
+    <h3>Tag Details</h3>
+    <h3>{{ tag.name }}</h3>
+</div>
+<div>
+    <h2>Posts</h2>
+    <ul>
+        {% for post in posts %}
+        <li>
+            <a href="{{ post.get_absolute_url }}">
+                <img src="{{ post.image.url }}" width="200px">
+                <h3>{{ post.title }}</h3>
+                {% with content=post.description %}
+                <span>{{ content|truncatechars:20 }}</span>
+                {% endwith %}
+                <p>created at: {{ post.created_at }}</p>
+            </a>
+        </li>
+        <hr>
+        {% empty %}
+        <h3>There isn't any post related to this category</h3>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

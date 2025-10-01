@@ -7,66 +7,70 @@ from taggit import models as TaggitModels
 from . import models
 
 
-class PostList(ListView):
+class PostListView(ListView):
     model = models.Post
 
     paginate_by = 12
 
-    context_object_name = "post_list"
+    context_object_name = "posts"
 
     def get_queryset(self) -> QuerySet[Any]:
-        queryset = models.Post.objects.all().order_by("-created_at")
-        tag_slug = self.kwargs.get("slug")
-        if tag_slug:
-            tag = get_object_or_404(TaggitModels.Tag, slug=tag_slug)
-            return queryset.filter(tags__in=[tag])
+        queryset = self.model.objects.all().order_by("-created_at")
         return queryset
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super(PostList, self).get_context_data(**kwargs)
-        tag_slug = self.kwargs.get("slug")
-        if tag_slug:
-            tag = get_object_or_404(TaggitModels.Tag, slug=tag_slug)
-            context["tag"] = tag
-        return context
 
-
-class PostDetail(DetailView):
+class PostDetailView(DetailView):
     model = models.Post
 
     context_object_name = "post"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super(PostDetail, self).get_context_data(**kwargs)
-        related_categories = self.object.category.all()[:5]
+        context = super(PostDetailView, self).get_context_data(**kwargs)
+        related_categories = self.object.categories.all()[:5]
         similar_posts = self.object.tags.similar_objects()[:5]
         context["categories"] = related_categories
         context["similar_posts"] = similar_posts
         return context
 
 
-class CategoryList(ListView):
+class CategoryListView(ListView):
     model = models.Category
-    queryset = model.objects.all().order_by("-created_at")
 
     paginate_by = 12
 
-    context_object_name = "category_list"
+    context_object_name = "categories"
+
+    def get_queryset(self):
+        return self.model.objects.all().order_by("-created_at")
 
 
-class CategoryDetail(DetailView):
+class CategoryDetailView(DetailView):
     model = models.Category
 
     context_object_name = "category"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super(CategoryDetail, self).get_context_data(**kwargs)
-        related_posts = self.object.rel_post_category.all()[:5]
+        context = super(CategoryDetailView, self).get_context_data(**kwargs)
+        related_posts = self.object.posts.all()[:5]
         context["posts"] = related_posts
         return context
 
 
-class TagList(ListView):
+class TagListView(ListView):
     model = TaggitModels.Tag
 
     context_object_name = "tags"
+
+
+class TagDetailView(DetailView):
+    model = TaggitModels.Tag
+
+    context_object_name = "tag"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tagged_posts = models.Post.objects.filter(tags=self.object)
+        related_categories = models.Category.objects.filter(posts__in=tagged_posts)
+        context["posts"] = tagged_posts
+        context["categories"] = related_categories
+        return context

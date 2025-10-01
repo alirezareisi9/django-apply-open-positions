@@ -48,8 +48,8 @@ class CategoryAdmin(admin.ModelAdmin):
         "parent_category",
     ]
 
-    readonly_fields = ['is_sub_category', 'created_at', 'updated_at']
-    
+    readonly_fields = ["is_sub_category", "created_at", "updated_at"]
+
     def get_form(self, request, obj, change, **kwargs):
         not_accessible_msg = _("It initializes automatically")
         help_texts = {
@@ -88,21 +88,21 @@ class PostAdmin(admin.ModelAdmin):
                     "created_at",
                     "updated_at",
                 ]
-            }
-        )
+            },
+        ),
     ]
 
     list_display = [
         "title",
         "created_at",
     ]  # cannot set a value to manytomanyfield or reverse foreign key
-    
+
     list_filter = [
         "created_at",
         "updated_at",
         "categories",
     ]
-    
+
     list_display_links = [
         "title",
     ]

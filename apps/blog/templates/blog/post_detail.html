@@ -1,63 +1,63 @@
 {% extends 'base.html' %}
 {% block title %}Post Details{% endblock %}
 {% block body %}
-    <div>
-        <img src="{{ post.image.url }}" width="250px">
-        <h3>{{ post.title }}</h3>
-        <span>{{ post.content|safe }}</span>
-        <span>tags : 
-            {% for tag in post.tags.all %}
-                <span>
-                    <a>{{ tag.name }}</a>
-                    {% if not forloop.last %}
-                        <span> | </span>
-                    {% endif %}
-                </span>
-            {% empty %}
-                <h3>There are no tags</h3>
-            {% endfor %}
+<div>
+    <img src="{{ post.image.url }}" width="250px">
+    <h3>{{ post.title }}</h3>
+    <span>{{ post.content|safe }}</span>
+    <span>tags :
+        {% for tag in post.tags.all %}
+        <span>
+            <a>{{ tag.name }}</a>
+            {% if not forloop.last %}
+            <span> | </span>
+            {% endif %}
         </span>
-        <p>created at: {{ post.created_at }}</p>
-        <p>updated at: {{ post.updated_at }}</p>
-    </div>
-    <div>
-        <h2>Categories</h2>
-        <ul>
-            {% for category in categories %}
-                <li>
-                    <a href="{{ category.get_absolute_url }}">
-                            <img src="{{ category.image.url }}" width="200px">
-                            <h3>{{ category.title }}</h3>
-                        {% with content=category.description %}
-                            <span>{{ content|truncatechars:20 }}</span>
-                        {% endwith %}
-                        <p>created at: {{ category.created_at }}</p>
-                    </a>
-                </li>
-                <hr>
-            {% empty %}
-                <h3>There are no category related to this post</h3>
-            {% endfor %}
-        </ul>
-    </div>
-    <div>
-        <h2>Similar Posts</h2>
-        <ul>
-            {% for post in similar_posts %}
-                <li>
-                    <a href="{{ post.get_absolute_url }}">
-                        <img src="{{ post.image.url }}" width="200px">
-                        <h3>{{ post.title }}</h3>
-                        {% with content=post.content|safe %}
-                            <span>{{ content|truncatechars:20 }}</span>
-                        {% endwith %}
-                        <p>created at: {{ post.created_at }}</p>
-                    </a>
-                </li>
-                <hr>
-            {% empty %}
-                <h3>There are no similar post on the site now</h3>
-            {% endfor %}
-        </ul>
-    </div>
+        {% empty %}
+        <h3>There are no tags</h3>
+        {% endfor %}
+    </span>
+    <p>created at: {{ post.created_at }}</p>
+    <p>updated at: {{ post.updated_at }}</p>
+</div>
+<div>
+    <h2>Categories</h2>
+    <ul>
+        {% for category in categories %}
+        <li>
+            <a href="{{ category.get_absolute_url }}">
+                <img src="{{ category.image.url }}" width="200px">
+                <h3>{{ category.title }}</h3>
+                {% with content=category.description %}
+                <span>{{ content|truncatechars:20 }}</span>
+                {% endwith %}
+                <p>created at: {{ category.created_at }}</p>
+            </a>
+        </li>
+        <hr>
+        {% empty %}
+        <h3>There are no category related to this post</h3>
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    <h2>Similar Posts</h2>
+    <ul>
+        {% for post in similar_posts %}
+        <li>
+            <a href="{{ post.get_absolute_url }}">
+                <img src="{{ post.image.url }}" width="200px">
+                <h3>{{ post.title }}</h3>
+                {% with content=post.content|safe %}
+                <span>{{ content|truncatechars:20 }}</span>
+                {% endwith %}
+                <p>created at: {{ post.created_at }}</p>
+            </a>
+        </li>
+        <hr>
+        {% empty %}
+        <h3>There are no similar post on the site now</h3>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

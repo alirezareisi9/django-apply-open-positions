@@ -17,6 +17,12 @@ class CustomAuthenticationMiddleware:
             "/accounts/reset-password-complete/",
             # admin
             "/admin/login/",
+            # blog
+            "/blog/posts/",
+            "/blog/categories/",
+            "/blog/tags/",
+            # ckeditor
+            '/ckeditor/upload/'
             # accounts
             # reverse('accounts:login'),
             # reverse('accounts:register'),
