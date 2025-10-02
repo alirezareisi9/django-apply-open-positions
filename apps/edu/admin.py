@@ -11,7 +11,7 @@ admin.site.register(Professor)
 #     model = University
 # class Meta:
 #     verbose_name_plural = "universities"
-admin.site.register(Courses)
+admin.site.register(Course)
 admin.site.register(Major)
 admin.site.register(Field)
 
