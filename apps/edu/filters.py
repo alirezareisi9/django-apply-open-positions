@@ -3,23 +3,25 @@ from .models import *
 
 
 class UniFilter(filters.FilterSet):
-    class Meta:
-        model = University
-        fields = {
-            "name": ["icontains"],
-            "scholarships": ["exact"],
-            "price": ["lt", "gt"],
-            "courses": ["exact"],
-            "majors": ["exact"],
-            "location": ["iexact"],
-        }
+    # class Meta:
+    #     model = University
+    #     fields = {
+    #         "name": ["icontains"],
+    #         "scholarships": ["exact"],
+    #         "price": ["lt", "gt"],
+    #         "courses": ["exact"],
+    #         "majors": ["exact"],
+    #         "location": ["iexact"],
+    #     }
+    pass
 
 
 class ProfFilter(filters.FilterSet):
-    class Meta:
-        model = Professor
-        fields = {
-            "last_name": ["icontains"],
-            "major": ["exact"],
-            "awards_and_honors": ["icontains"],
-        }
+    # class Meta:
+    #     model = Professor
+    #     fields = {
+    #         "last_name": ["icontains"],
+    #         "major": ["exact"],
+    #         "awards_and_honors": ["icontains"],
+    #     }
+    pass
