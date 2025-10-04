@@ -41,6 +41,7 @@ class Professor(models.Model):
     photo = models.ImageField(upload_to="professor-photo/", blank=True, null=True)
     research_interests = models.TextField(blank=True, null=True)
     fields = models.ManyToManyField(Field, related_name="professors")
+    university = models.ForeignKey('University', blank=True, null=True, on_delete=models.CASCADE)
     department = models.CharField(max_length=100, blank=True, null=True)
     awards_and_honors = models.TextField(blank=True, null=True)
     projects = models.TextField(blank=True, null=True)
@@ -69,7 +70,7 @@ class Education(models.Model):
         max_length=200,
         related_name="educations",
     )  # e.g., MIT
-    graduation_year = models.IntegerField(null=True, blank=True)
+    graduation_year = models.PositiveIntegerField(null=True, blank=True)
 
 
 class Publication(models.Model):
@@ -92,7 +93,7 @@ class Course(models.Model):
     is_accessible = models.BooleanField(blank=True, null=True, default=False)
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class University(models.Model):
@@ -105,9 +106,6 @@ class University(models.Model):
         max_length=1000, blank=True, null=True
     )  # alternatively  i can  make a country choice field and put every "important" country in there
     rank = models.PositiveSmallIntegerField(blank=True, null=True)
-    professors = models.ManyToManyField(
-        Professor, blank=True, null=True, related_name="universities"
-    )
     courses = models.ManyToManyField(
         Course, blank=True, null=True, related_name="universities"
     )
