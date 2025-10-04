@@ -83,6 +83,7 @@ class Course(models.Model):
     major = models.ForeignKey(
         Major, blank=True, null=True, on_delete=models.SET_NULL, related_name="courses"
     )
+    lesson_name = models.CharField(max_length=250)
     professors = models.ManyToManyField(
         Professor, blank=True, null=True, related_name="courses"
     )
