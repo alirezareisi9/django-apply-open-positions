@@ -1,22 +1,24 @@
 from django.db import models
 
 
-# class Location(models.Model):
-#     continent = models.TextField(blank=True)
-#     country = models.TextField(blank=True)
-#     state  = models.TextField(blank=True)
-#     city = models.TextField(blank=True)
+class DegreeChoices:
+    BACHELOR_CHOICE = "BACHELOR"
+    MASTER_CHOICE = "MASTER"
+    PHD_CHOICE = "PHD"
 
-#     def get_content(self):
-#         return f"{self.continent} + {self.country} + {self.city}"
-
-#     def __str__(self):
-
-#          return self.get_content()
+    DEGREE_CHOICES = [
+        # (name on code, name represents on interface)
+        (BACHELOR_CHOICE, "Bachelor"),
+        (MASTER_CHOICE, "Master"),
+        (PHD_CHOICE, "PHD"),
+    ]
 
 
 class Major(models.Model):
     title = models.CharField(max_length=500)
+    degree = models.CharField(
+        max_length=100, choices=DegreeChoices.DEGREE_CHOICES
+    )  # e.g., B.Sc., M.Sc., Ph.D.
 
     def __str__(self):
         return self.title
@@ -24,7 +26,7 @@ class Major(models.Model):
 
 class Field(models.Model):
     title = models.CharField(max_length=500)
-    major = models.ForeignKey(Major, on_delete=models.CASCADE, related_name="fields")
+    majors = models.ManyToManyField(Major, related_name="fields")
 
     def __str__(self):
         return self.title
@@ -33,51 +35,91 @@ class Field(models.Model):
 class Professor(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    institution = models.CharField(max_length=100)
-    department = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=20)
-    office_location = models.CharField(max_length=100)
-    research_interests = models.TextField()
-    publications = models.TextField()
-    courses_taught = models.TextField()
-    university = models.ManyToManyField("University", blank=True)
-    biography = models.TextField()
-    photo = models.ImageField(upload_to="images/")
-    education = models.TextField()
-    awards_and_honors = models.TextField()
-    professional_associations = models.TextField()
-    projects = models.TextField()
-    rating = models.IntegerField()
-    major = models.ManyToManyField("major")
-    course = models.ManyToManyField("courses", related_name="profcourses+")
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=11, blank=True, null=True)
+    biography = models.TextField(blank=True, null=True)
+    photo = models.ImageField(upload_to="professor-photo/", blank=True, null=True)
+    research_interests = models.TextField(blank=True, null=True)
+    fields = models.ManyToManyField(Field, related_name="professors")
+    university = models.ForeignKey(
+        "University", blank=True, null=True, on_delete=models.CASCADE
+    )
+    department = models.CharField(max_length=100, blank=True, null=True)
+    awards_and_honors = models.TextField(blank=True, null=True)
+    projects = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
 
 
-class Courses(models.Model):
-    class Meta:
-        verbose_name_plural = "Courses"
+class Education(models.Model):
+    professor = models.ForeignKey(
+        "Professor", on_delete=models.CASCADE, related_name="educations"
+    )
+    major = models.ForeignKey(
+        Major,
+        max_length=150,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="educations",
+    )  # e.g., Computer Science
+    university = models.ForeignKey(
+        "University",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        max_length=200,
+        related_name="educations",
+    )  # e.g., MIT
+    graduation_year = models.PositiveIntegerField(null=True, blank=True)
 
-    class StudyLevelChoices(models.TextChoices):
-        BACHELORS = "BACHELORS"
-        MASTERS = "MASTERS"
-        PHD = "PHD"
 
+class Publication(models.Model):
     title = models.CharField(max_length=100)
-    major = models.ManyToManyField(Major, blank=True)
-    studylevel = models.CharField(max_length=9, choices=StudyLevelChoices.choices)
-    professrs = models.ManyToManyField(Professor, blank=True)
+    authors = models.ManyToManyField(
+        Professor, through="Authorship", related_name="publications"
+    )
+    file = models.FileField(upload_to="publication-files/")
 
-    period = models.CharField(max_length=100)
-    price = models.IntegerField()
-    online = models.BooleanField(blank=True)
-    on_campus = models.BooleanField(blank=True)
-    capacity = models.IntegerField(blank=True, null=True)
+
+class Authorship(models.Model):
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE)
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("professor", "publication")
 
     def __str__(self):
-        return self.name
+        return f"{self.professor.first_name} {self.professor.last_name} → {self.publication.title}"
+
+
+class Course(models.Model):
+    title = models.CharField(max_length=100)
+    major = models.ForeignKey(
+        Major, blank=True, null=True, on_delete=models.SET_NULL, related_name="courses"
+    )
+    lesson_name = models.CharField(max_length=250)
+    professors = models.ManyToManyField(
+        Professor, blank=True, null=True, through="Teaching", related_name="courses"
+    )
+    period = models.CharField(max_length=100)
+    price = models.IntegerField()
+    is_accessible = models.BooleanField(blank=True, null=True, default=False)
+
+    def __str__(self):
+        return self.title
+
+
+class Teaching(models.Model):
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("professor", "course")
+
+    def __str__(self):
+        return f"{self.professor.first_name} {self.professor.last_name} → {self.course.title}"
 
 
 class University(models.Model):
@@ -85,18 +127,54 @@ class University(models.Model):
         verbose_name_plural = "universities"
 
     name = models.CharField(max_length=100)
+    logo = models.ImageField(upload_to="university_logo/", blank=True, null=True)
     location = models.CharField(
-        max_length=1000
+        max_length=1000, blank=True, null=True
     )  # alternatively  i can  make a country choice field and put every "important" country in there
-    rank = models.PositiveSmallIntegerField()
-    professors = models.ManyToManyField(
-        Professor, blank=True, related_name="working_professors+"
+    rank = models.PositiveSmallIntegerField(blank=True, null=True)
+    courses = models.ManyToManyField(
+        Course,
+        blank=True,
+        null=True,
+        through="UniversityCourse",
+        related_name="universities",
     )
-    courses = models.ManyToManyField(Courses, blank=True)
-    majors = models.ManyToManyField(Major, blank=True)
-    scholarships = models.BooleanField()
-    images = models.ImageField(upload_to="uni_image")
-    price = models.IntegerField()
+    majors = models.ManyToManyField(
+        Major, blank=True, null=True, related_name="uiversities"
+    )
 
     def __str__(self):
         return self.name
+
+
+class UniversityCourse(models.Model):
+    university = models.ForeignKey(University, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("university", "course")
+
+    def __str__(self):
+        return f"{self.university.name} → {self.course.title}"
+
+
+class UniversityImage(models.Model):
+    image = models.ImageField(upload_to="university_image/")
+    university = models.ForeignKey(
+        University, on_delete=models.CASCADE, related_name="images"
+    )
+
+
+class Position(models.Model):
+    title = models.CharField(max_length=250)
+    description = models.TextField(blank=True, null=True)
+    university = models.ForeignKey(
+        University, on_delete=models.CASCADE, related_name="positions"
+    )
+    professor = models.ForeignKey(
+        Professor, on_delete=models.CASCADE, related_name="positions"
+    )
+    major = models.ForeignKey(Major, on_delete=models.CASCADE, related_name="majors")
+    posted_date = models.DateField(auto_now_add=True)
+    deadline = models.DateField(blank=True, null=True)
+    is_open = models.BooleanField(default=True)
