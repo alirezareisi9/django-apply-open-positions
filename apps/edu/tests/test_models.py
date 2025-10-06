@@ -28,10 +28,10 @@ class ModelsTests(TestCase):
         cls.file = SimpleUploadedFile("file.txt", cls.content, "text/plain")
 
         cls.major = Major.objects.create(title="major", degree="BACHELOR")
-        
+
         cls.field = Field.objects.create(title="field")
         cls.field.majors.add(cls.major)
-        
+
         cls.professor = Professor.objects.create(
             first_name="professor",
             last_name="professor",
@@ -41,7 +41,7 @@ class ModelsTests(TestCase):
             photo=cls.photo,
         )
         cls.professor.fields.add(cls.field)
-        
+
         cls.publication = Publication.objects.create(title="test", file=cls.file)
         # cls.publication.authors.add(cls.professor)
         Authorship.objects.create(professor=cls.professor, publication=cls.publication)
@@ -86,7 +86,6 @@ class ModelsTests(TestCase):
             university=cls.university,
             graduation_year=2000,
         )
-
 
     def test_major(self):
         major = self.major

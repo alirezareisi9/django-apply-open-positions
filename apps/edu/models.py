@@ -133,7 +133,11 @@ class University(models.Model):
     )  # alternatively  i can  make a country choice field and put every "important" country in there
     rank = models.PositiveSmallIntegerField(blank=True, null=True)
     courses = models.ManyToManyField(
-        Course, blank=True, null=True, through='UniversityCourse', related_name="universities"
+        Course,
+        blank=True,
+        null=True,
+        through="UniversityCourse",
+        related_name="universities",
     )
     majors = models.ManyToManyField(
         Major, blank=True, null=True, related_name="uiversities"

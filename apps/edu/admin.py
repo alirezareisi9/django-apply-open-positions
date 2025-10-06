@@ -154,15 +154,15 @@ class PublicationAdmin(admin.ModelAdmin):
 
 class UniversityUniversityCourse(admin.TabularInline):
     model = models.UniversityCourse
-    fields = ('course', )
-    raw_id_fields = ('course', )
+    fields = ("course",)
+    raw_id_fields = ("course",)
     extra = 1
 
 
 class CourseUniversityCourse(admin.TabularInline):
     model = models.UniversityCourse
-    fields = ('university', )
-    raw_id_fields = ('university', )
+    fields = ("university",)
+    raw_id_fields = ("university",)
     extra = 1
 
 
@@ -188,14 +188,16 @@ class CourseAdmin(admin.ModelAdmin):
     search_fields = ["professors__first_name", "professors_last_name"]
     raw_id_fields = ["major"]
 
-    inlines = (CourseTeachingInline, CourseUniversityCourse, )
+    inlines = (
+        CourseTeachingInline,
+        CourseUniversityCourse,
+    )
 
 
 class UniversityImageInline(admin.TabularInline):
     model = models.UniversityImage
-    fields = ("image", )
+    fields = ("image",)
     extra = 1
-
 
 
 @admin.register(models.University)
@@ -207,8 +209,8 @@ class UniversityAdmin(admin.ModelAdmin):
                 "fields": [
                     "name",
                     "logo",
-                    'location',
-                    'rank',
+                    "location",
+                    "rank",
                     "majors",
                 ]
             },
@@ -216,10 +218,15 @@ class UniversityAdmin(admin.ModelAdmin):
     ]
     list_display = ["name", "rank"]
     list_filter = ["majors"]
-    search_fields = ["name", "rank", 'courses__title']
-    raw_id_fields = ["majors", ]
+    search_fields = ["name", "rank", "courses__title"]
+    raw_id_fields = [
+        "majors",
+    ]
 
-    inlines = (UniversityImageInline, UniversityUniversityCourse, )
+    inlines = (
+        UniversityImageInline,
+        UniversityUniversityCourse,
+    )
 
 
 @admin.register(models.UniversityImage)
@@ -230,15 +237,15 @@ class UniversityImage(admin.ModelAdmin):
             {
                 "fields": [
                     "image",
-                    'university',
+                    "university",
                 ]
             },
         )
     ]
-    list_display = ['university']
-    list_filter = ['university']
-    search_fields = ['university']
-    raw_id_fields = ['university']
+    list_display = ["university"]
+    list_filter = ["university"]
+    search_fields = ["university"]
+    raw_id_fields = ["university"]
 
 
 @admin.register(models.Position)
@@ -249,22 +256,28 @@ class PositionAdmin(admin.ModelAdmin):
             {
                 "fields": [
                     "title",
-                    'description',
-                    'university',
-                    'professor',
-                    'major',
-                    'posted_date',
-                    'deadline',
-                    'is_open',
+                    "description",
+                    "university",
+                    "professor",
+                    "major",
+                    "posted_date",
+                    "deadline",
+                    "is_open",
                 ]
             },
         )
     ]
-    list_display = ['title', 'university', 'professor', 'deadline']
-    list_filter = ['posted_date', 'deadline', 'is_open',]
-    search_fields = ['university', 'professor', 'major']
-    raw_id_fields = ['university', 'professor']
-    readonly_fields = ['posted_date', ]
+    list_display = ["title", "university", "professor", "deadline"]
+    list_filter = [
+        "posted_date",
+        "deadline",
+        "is_open",
+    ]
+    search_fields = ["university", "professor", "major"]
+    raw_id_fields = ["university", "professor"]
+    readonly_fields = [
+        "posted_date",
+    ]
 
     def get_form(self, request, obj, change, **kwargs):
         not_accessible_msg = _("It initializes automatically")
