@@ -152,6 +152,20 @@ class PublicationAdmin(admin.ModelAdmin):
     inlines = (PublicationAuthorshipInline,)
 
 
+class UniversityUniversityCourse(admin.TabularInline):
+    model = models.UniversityCourse
+    fields = ('course', )
+    raw_id_fields = ('course', )
+    extra = 1
+
+
+class CourseUniversityCourse(admin.TabularInline):
+    model = models.UniversityCourse
+    fields = ('university', )
+    raw_id_fields = ('university', )
+    extra = 1
+
+
 @admin.register(models.Course)
 class CourseAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -174,13 +188,14 @@ class CourseAdmin(admin.ModelAdmin):
     search_fields = ["professors__first_name", "professors_last_name"]
     raw_id_fields = ["major"]
 
-    inlines = (CourseTeachingInline,)
+    inlines = (CourseTeachingInline, CourseUniversityCourse, )
 
 
 class UniversityImageInline(admin.TabularInline):
     model = models.UniversityImage
     fields = ("image", )
     extra = 1
+
 
 
 @admin.register(models.University)
@@ -194,7 +209,6 @@ class UniversityAdmin(admin.ModelAdmin):
                     "logo",
                     'location',
                     'rank',
-                    'courses',
                     "majors",
                 ]
             },
@@ -202,10 +216,10 @@ class UniversityAdmin(admin.ModelAdmin):
     ]
     list_display = ["name", "rank"]
     list_filter = ["majors"]
-    search_fields = ["name", "rank", 'courses']
-    raw_id_fields = ["majors", 'courses']
+    search_fields = ["name", "rank", 'courses__title']
+    raw_id_fields = ["majors", ]
 
-    inlines = (UniversityImageInline, )
+    inlines = (UniversityImageInline, UniversityUniversityCourse, )
 
 
 @admin.register(models.UniversityImage)

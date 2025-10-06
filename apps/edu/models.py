@@ -133,7 +133,7 @@ class University(models.Model):
     )  # alternatively  i can  make a country choice field and put every "important" country in there
     rank = models.PositiveSmallIntegerField(blank=True, null=True)
     courses = models.ManyToManyField(
-        Course, blank=True, null=True, related_name="universities"
+        Course, blank=True, null=True, through='UniversityCourse', related_name="universities"
     )
     majors = models.ManyToManyField(
         Major, blank=True, null=True, related_name="uiversities"
@@ -141,6 +141,17 @@ class University(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class UniversityCourse(models.Model):
+    university = models.ForeignKey(University, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("university", "course")
+
+    def __str__(self):
+        return f"{self.university.name} → {self.course.title}"
 
 
 class UniversityImage(models.Model):

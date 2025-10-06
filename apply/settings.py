@@ -21,7 +21,6 @@ for updating your local requirements.txt
 for interactive bash in postgres
     docker exec -it <postgres-container> bash
     psql -U <user-name> -d <dbname>
-
 """
 
 from pathlib import Path
