@@ -41,7 +41,9 @@ class Professor(models.Model):
     photo = models.ImageField(upload_to="professor-photo/", blank=True, null=True)
     research_interests = models.TextField(blank=True, null=True)
     fields = models.ManyToManyField(Field, related_name="professors")
-    university = models.ForeignKey('University', blank=True, null=True, on_delete=models.CASCADE)
+    university = models.ForeignKey(
+        "University", blank=True, null=True, on_delete=models.CASCADE
+    )
     department = models.CharField(max_length=100, blank=True, null=True)
     awards_and_honors = models.TextField(blank=True, null=True)
     projects = models.TextField(blank=True, null=True)
@@ -75,8 +77,21 @@ class Education(models.Model):
 
 class Publication(models.Model):
     title = models.CharField(max_length=100)
-    authors = models.ManyToManyField(Professor, related_name="publications")
+    authors = models.ManyToManyField(
+        Professor, through="Authorship", related_name="publications"
+    )
     file = models.FileField(upload_to="publication-files/")
+
+
+class Authorship(models.Model):
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE)
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("professor", "publication")
+
+    def __str__(self):
+        return f"{self.professor.first_name} {self.professor.last_name} → {self.publication.title}"
 
 
 class Course(models.Model):
@@ -86,7 +101,7 @@ class Course(models.Model):
     )
     lesson_name = models.CharField(max_length=250)
     professors = models.ManyToManyField(
-        Professor, blank=True, null=True, related_name="courses"
+        Professor, blank=True, null=True, through="Teaching", related_name="courses"
     )
     period = models.CharField(max_length=100)
     price = models.IntegerField()
@@ -94,6 +109,17 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Teaching(models.Model):
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("professor", "course")
+
+    def __str__(self):
+        return f"{self.professor.first_name} {self.professor.last_name} → {self.course.title}"
 
 
 class University(models.Model):
