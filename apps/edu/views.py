@@ -1,35 +1,58 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import *
+from . import models
 from django.contrib.auth.models import User
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+
 
 from .filters import *
 
 
-# def home(request):
-#     university = University.objects.all()
-#     filters = UniFilter(request.GET, queryset=university)
-#     context = {"university": filters.qs, "form": filters.form}
-#     return render(request, "home/home.html", context)
+class PositionListView(ListView):
+    model = models.Position
+    context_object_name = "positions"
+    paginate_by = 12
+
+    def get_queryset(self):
+        return self.model.objects.all()
 
 
-# def fakeadmin(request):
-#     return render(request, "home/fakeadmin.html")
+class PositionDetailView(DetailView):
+    model = models.Position
+    context_object_name = "position"
 
 
-# def uni_detail(request, id=None):
-#     uni = get_object_or_404(University, id=id)
-#     # print(type(uni.name))
-#     # print(type(Professor.objects.filter(university__name="")))
-#     filters = ProfFilter(request.GET, queryset=Professor.objects.filter(university=uni))
+class UniversityListView(ListView):
+    model = models.University
+    context_object_name = "universitys"
+    paginate_by = 12
 
-#     context = {"university": uni, "professors": filters.qs, "form": filters.form}
-#     return render(request, "home/detail.html", context)
+    def get_queryset(self):
+        return self.model.objects.all()
 
 
-# def prof_detail(request, id=None):
-#     professor = get_object_or_404(Professor, id=id)
-#     print(professor.name)
-#     context = {
-#         "professor": professor,
-#     }
-#     return render(request, "home/profile.html", context)
+class ProfessorListView(ListView):
+    model = models.Professor
+    context_object_name = "professors"
+    paginate_by = 12
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+
+class PublicationListView(ListView):
+    model = models.Publication
+    context_object_name = "publications"
+    paginate_by = 12
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+
+class CourseListView(ListView):
+    model = models.Course
+    context_object_name = "courses"
+    paginate_by = 12
+
+    def get_queryset(self):
+        return self.model.objects.all()

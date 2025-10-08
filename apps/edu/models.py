@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class DegreeChoices:
@@ -51,6 +52,9 @@ class Professor(models.Model):
     def __str__(self):
         return self.first_name + " " + self.last_name
 
+    def get_absolute_url(self):
+        return reverse("edu:professor-detail", kwargs={"id": self.id})
+
 
 class Education(models.Model):
     professor = models.ForeignKey(
@@ -74,6 +78,12 @@ class Education(models.Model):
     )  # e.g., MIT
     graduation_year = models.PositiveIntegerField(null=True, blank=True)
 
+    def __str__(self):
+        return self.professor
+
+    def get_absolute_url(self):
+        return reverse("edu:education-detail", kwargs={"id": self.id})
+
 
 class Publication(models.Model):
     title = models.CharField(max_length=100)
@@ -81,6 +91,12 @@ class Publication(models.Model):
         Professor, through="Authorship", related_name="publications"
     )
     file = models.FileField(upload_to="publication-files/")
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("edu:publication-detail", kwargs={"id": self.id})
 
 
 class Authorship(models.Model):
@@ -109,6 +125,9 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("edu:course-detail", kwargs={"id": self.id})
 
 
 class Teaching(models.Model):
@@ -143,6 +162,9 @@ class University(models.Model):
         Major, blank=True, null=True, related_name="uiversities"
     )
 
+    def get_absolute_url(self):
+        return reverse("edu:univeristy-detail", kwargs={"id": self.id})
+
     def __str__(self):
         return self.name
 
@@ -164,6 +186,9 @@ class UniversityImage(models.Model):
         University, on_delete=models.CASCADE, related_name="images"
     )
 
+    def __str__(self):
+        return self.university
+
 
 class Position(models.Model):
     title = models.CharField(max_length=250)
@@ -178,3 +203,9 @@ class Position(models.Model):
     posted_date = models.DateField(auto_now_add=True)
     deadline = models.DateField(blank=True, null=True)
     is_open = models.BooleanField(default=True)
+
+    def get_absolute_url(self):
+        return reverse("edu:position-detail", kwargs={"id": self.id})
+
+    def __str__(self):
+        return self.title
