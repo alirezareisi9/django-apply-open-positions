@@ -36,8 +36,8 @@ class UniversityDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['courses'] = self.object.courses.all()
-        context['majors'] = self.object.majors.all()
+        context["courses"] = self.object.courses.all()
+        context["majors"] = self.object.majors.all()
 
         return context
 
@@ -58,7 +58,7 @@ class ProfessorDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['fields'] = self.object.fields.all()
+        context["fields"] = self.object.fields.all()
 
         return context
 
@@ -70,11 +70,11 @@ class PublicationListView(ListView):
 
     def get_queryset(self):
         return self.model.objects.all()
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['authors'] = self.object.authors.all()
+        context["authors"] = self.object.authors.all()
 
         return context
 
@@ -86,9 +86,10 @@ class PublicationDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['authors'] = self.object.authors.all()
+        context["authors"] = self.object.authors.all()
 
         return context
+
 
 class CourseListView(ListView):
     model = models.Course
@@ -101,7 +102,7 @@ class CourseListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['professors'] = self.object.professors.all()
+        context["professors"] = self.object.professors.all()
 
         return context
 
@@ -113,6 +114,6 @@ class CourseDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['professors'] = self.object.professors.all()
+        context["professors"] = self.object.professors.all()
 
         return context
