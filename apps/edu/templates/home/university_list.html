@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Universities{% endblock %}
+{% block body %}
+    <h1>University List</h1>
+    <ul>
+        {% for university in universities %}
+            <li>
+                <a href="{{ university.get_absolute_url }}">
+                    <h3>{{ university.name }}</h3>
+                    <img src="{{ university.logo.url }}" width="250px">
+                    <span>{{ university.location }}</span>
+                    <p>{{ university.rank }}</p>
+                </a>
+            </li>
+            <hr>
+        {% empty %}
+            <h3>There are no university on the site now</h3>
+        {% endfor %}
+    </ul>
+{% endblock %}

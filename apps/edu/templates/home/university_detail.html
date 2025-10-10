@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}University Details{% endblock %}
+{% block body %}
+    <div>
+        <h3>{{ university.name }}</h3>
+        <img src="{{ university.logo.url }}" width="250px">
+        <span>{{ university.location }}</span>
+        <span>university: {{ university.rank }}</span>
+        <span>courses: </span>
+        {% for course in courses %}
+            <span>
+                <a href="{{ course.get_absolute_url }}">
+                    {{ course.title }}
+                </a>
+                {% if not forloop.last %}
+                <span>, </span>
+                {% endif %}
+            </span>
+        {% endfor %}
+        <span>majors: </span>
+        {% for major in majors %}
+            <span>
+                {{ major.title }}
+                {% if not forloop.last %}
+                <span>, </span>
+                {% endif %}
+            </span>
+        {% endfor %}
+    </div>
+{% endblock %}

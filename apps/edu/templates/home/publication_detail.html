@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Publication Details{% endblock %}
+{% block body %}
+<h3>{{ publication.title }}</h3>
+<span>
+    <a href="{{ publication.file.url }}">
+        {{ publication.file.name }}
+        {{ publication.file.size|filesizeformat }}
+    </a>
+
+</span>
+<span>authors: </span>
+{% for author in authors %}
+    <span>
+        <a href="{{ author.get_absolute_url }}">
+            {{ author.first_name }} {{ author.last_name }}
+        </a>
+        {% if not forloop.last %}
+        <span>, </span>
+        {% endif %}
+    </span>
+{% endfor %}
+{% endblock %}

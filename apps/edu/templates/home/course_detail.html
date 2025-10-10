@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Course Details{% endblock %}
+{% block body %}
+    <div>
+        <h3>{{ course.title }}</h3>
+        <span>major: {{ course.major }}</span>
+        <span>lesson name: {{ course.lesson_name }}</span>
+        <span>period: {{ course.period }}</span>
+        <span>price: {{ course.price }}</span>
+        <span>is accessible: {{ course.is_accessible }}</span>
+        <span>professors: </span>
+        {% for professor in professors %}
+            <span>
+                <a href="{{ professor.get_absolute_url }}">{{ professor.first_name }} {{ professor.last_name }}</a>
+                {% if not forloop.last %}
+                <span>, </span>
+                {% endif %}
+            </span>
+        {% endfor %}
+    </div>
+{% endblock %}
