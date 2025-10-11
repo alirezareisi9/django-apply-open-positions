@@ -12,7 +12,7 @@ class PositionListView(ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        return self.model.objects.all()
+        return self.model.objects.all().order_by('-posted_date')
 
 
 class PositionDetailView(DetailView):
@@ -22,7 +22,7 @@ class PositionDetailView(DetailView):
 
 class UniversityListView(ListView):
     model = models.University
-    context_object_name = "universitys"
+    context_object_name = "universities"
     paginate_by = 12
 
     def get_queryset(self):
@@ -71,12 +71,12 @@ class PublicationListView(ListView):
     def get_queryset(self):
         return self.model.objects.all()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
 
-        context["authors"] = self.object.authors.all()
+    #     context["authors"] = self.object.authors.all()
 
-        return context
+    #     return context
 
 
 class PublicationDetailView(DetailView):
@@ -99,12 +99,12 @@ class CourseListView(ListView):
     def get_queryset(self):
         return self.model.objects.all()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
 
-        context["professors"] = self.object.professors.all()
+    #     context["professors"] = self.object.professors.all()
 
-        return context
+    #     return context
 
 
 class CourseDetailView(DetailView):

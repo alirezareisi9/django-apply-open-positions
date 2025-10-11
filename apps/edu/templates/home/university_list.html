@@ -6,10 +6,13 @@
         {% for university in universities %}
             <li>
                 <a href="{{ university.get_absolute_url }}">
-                    <h3>{{ university.name }}</h3>
+                    <h3>name: {{ university.name }}</h3>
+                    <br>
                     <img src="{{ university.logo.url }}" width="250px">
-                    <span>{{ university.location }}</span>
-                    <p>{{ university.rank }}</p>
+                    <br>
+                    <span>location: {{ university.location }}</span>
+                    <br>
+                    <p>rank: {{ university.rank }}</p>
                 </a>
             </li>
             <hr>

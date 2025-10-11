@@ -6,18 +6,19 @@
         {% for publication in publications %}
             <li>
                 <a href="{{ publication.get_absolute_url }}">
-                    <h3>{{ publication.title }}</h3>
-                    <span>professors: </span>
-                    {% for professor in professors %}
+                    <h3>title: {{ publication.title }}</h3>
+                    <br>
+                    <span>authors: </span>
+                    {% with authors=publication.authors.all %}
+                    {% for author in authors %}
                         <span>
-                            <a href="{{ professor.get_absolute_url }}">
-                                {{ professor.first_name }} {{ professor.last_name }}
-                            </a>
+                            {{ author.first_name }} {{ author.last_name }}
                             {% if not forloop.last %}
                             <span>, </span>
                             {% endif %}
                         </span>
                     {% endfor %}
+                    {% endwith %}
                 </a>
             </li>
             <hr>

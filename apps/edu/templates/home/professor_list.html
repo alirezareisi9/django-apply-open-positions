@@ -6,9 +6,11 @@
         {% for professor in professors %}
             <li>
                 <a href="{{ professor.get_absolute_url }}">
-                    <h3>{{ professor.first_name }} {{ professor.last_name }}</h3>
-                    <span>{{ professor.email }}</span>
-                    <span>{{ professor.university.name }}</span>
+                    <h3>name: {{ professor.first_name }} {{ professor.last_name }}</h3>
+                    <br>
+                    <span>email: {{ professor.email }}</span>
+                    <br>
+                    <span>university: {{ professor.university.name }}</span>
                 </a>
             </li>
             <hr>

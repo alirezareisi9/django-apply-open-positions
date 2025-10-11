@@ -9,54 +9,54 @@ app_name = "edu"
 urlpatterns = [
     path(
         "positions/",
-        views.PositionListView.as_view(template_name="edu/position_list.html"),
+        views.PositionListView.as_view(template_name="home/position_list.html"),
         name="position-list",
     ),
     path(
-        "positions/<int:id>/",
-        views.PositionDetailView.as_view(template_name="edu/position_detail.html"),
+        "positions/<int:pk>/",
+        views.PositionDetailView.as_view(template_name="home/position_detail.html"),
         name="position-detail",
     ),
     path(
         "universities/",
-        views.UniversityListView.as_view(template_name="edu/university_list.html"),
+        views.UniversityListView.as_view(template_name="home/university_list.html"),
         name="university-list",
     ),
     path(
-        "universities/<int:id>/",
-        views.UniversityDetailView.as_view(template_name="edu/university_detail.html"),
+        "universities/<int:pk>/",
+        views.UniversityDetailView.as_view(template_name="home/university_detail.html"),
         name="university-detail",
     ),
     path(
         "professors/",
-        views.ProfessorListView.as_view(template_name="edu/professor_list.html"),
+        views.ProfessorListView.as_view(template_name="home/professor_list.html"),
         name="professor-list",
     ),
     path(
-        "professors/<int:id>/",
-        views.ProfessorDetailView.as_view(template_name="edu/professor_detail.html"),
+        "professors/<int:pk>/",
+        views.ProfessorDetailView.as_view(template_name="home/professor_detail.html"),
         name="professor-detail",
     ),
     path(
         "publications/",
-        views.PublicationListView.as_view(template_name="edu/publication_list.html"),
+        views.PublicationListView.as_view(template_name="home/publication_list.html"),
         name="publication-list",
     ),
     path(
-        "publications/<int:id>/",
+        "publications/<int:pk>/",
         views.PublicationDetailView.as_view(
-            template_name="edu/publication_detail.html"
+            template_name="home/publication_detail.html"
         ),
         name="publication-detail",
     ),
     path(
         "courses/",
-        views.CourseListView.as_view(template_name="edu/course_list.html"),
+        views.CourseListView.as_view(template_name="home/course_list.html"),
         name="course-list",
     ),
     path(
-        "courses/<int:id>/",
-        views.CourseDetailView.as_view(template_name="edu/course_detail.html"),
+        "courses/<int:pk>/",
+        views.CourseDetailView.as_view(template_name="home/course_detail.html"),
         name="course-detail",
     ),
 ]

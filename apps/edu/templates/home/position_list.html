@@ -6,9 +6,15 @@
         {% for position in positions %}
             <li>
                 <a href="{{ position.get_absolute_url }}">
-                    <h3>{{ position.title }}</h3>
-                    <span>{{ position.description|truncatechars:25 }}</span>
+                    <h3>title: {{ position.title }}</h3>
+                    <br>
+                    <span>description: {{ position.description|truncatechars:25 }}</span>
+                    <br>
+                    <span>university: </span>
                     <a href="{{ position.university.get_absolute_url }}">{{ position.university.name }}</a>
+                    
+                    <br>
+                    <span>professor: </span>
                     <a href="{{ position.professor.get_absolute_url }}">{{ position.professor.first_name }} {{ position.professor.last_name }}</a>
                     <p>is open: {{ position.is_open }}</p>
                 </a>

@@ -1,14 +1,19 @@
 {% extends 'base.html' %}
 {% block title %}Publication Details{% endblock %}
 {% block body %}
-<h3>{{ publication.title }}</h3>
+<h2>Publication Details</h2>
+<h3>title: {{ publication.title }}</h3>
+<br>
 <span>
+    file: 
     <a href="{{ publication.file.url }}">
         {{ publication.file.name }}
+        <br>
         {{ publication.file.size|filesizeformat }}
     </a>
 
 </span>
+<br>
 <span>authors: </span>
 {% for author in authors %}
     <span>
@@ -20,4 +25,5 @@
         {% endif %}
     </span>
 {% endfor %}
+<hr>
 {% endblock %}

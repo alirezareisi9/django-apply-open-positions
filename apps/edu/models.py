@@ -52,7 +52,7 @@ class Professor(models.Model):
         return self.first_name + " " + self.last_name
 
     def get_absolute_url(self):
-        return reverse("edu:professor-detail", kwargs={"id": self.id})
+        return reverse("edu:professor-detail", kwargs={"pk": self.id})
 
 
 class Education(models.Model):
@@ -78,10 +78,10 @@ class Education(models.Model):
     graduation_year = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.professor
+        return f"{self.professor.first_name} {self.professor.last_name}"
 
     def get_absolute_url(self):
-        return reverse("edu:education-detail", kwargs={"id": self.id})
+        return reverse("edu:education-detail", kwargs={"pk": self.id})
 
 
 class Publication(models.Model):
@@ -95,7 +95,7 @@ class Publication(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("edu:publication-detail", kwargs={"id": self.id})
+        return reverse("edu:publication-detail", kwargs={"pk": self.id})
 
 
 class Authorship(models.Model):
@@ -126,7 +126,7 @@ class Course(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("edu:course-detail", kwargs={"id": self.id})
+        return reverse("edu:course-detail", kwargs={"pk": self.id})
 
 
 class Teaching(models.Model):
@@ -162,7 +162,7 @@ class University(models.Model):
     )
 
     def get_absolute_url(self):
-        return reverse("edu:univeristy-detail", kwargs={"id": self.id})
+        return reverse("edu:university-detail", kwargs={"pk": self.id})
 
     def __str__(self):
         return self.name
@@ -186,7 +186,7 @@ class UniversityImage(models.Model):
     )
 
     def __str__(self):
-        return self.university
+        return self.university.name
 
 
 class Position(models.Model):
@@ -204,7 +204,7 @@ class Position(models.Model):
     is_open = models.BooleanField(default=True)
 
     def get_absolute_url(self):
-        return reverse("edu:position-detail", kwargs={"id": self.id})
+        return reverse("edu:position-detail", kwargs={"pk": self.id})
 
     def __str__(self):
         return self.title

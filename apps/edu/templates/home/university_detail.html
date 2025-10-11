@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
 {% block title %}University Details{% endblock %}
 {% block body %}
+    <h2>University Details</h2>
     <div>
-        <h3>{{ university.name }}</h3>
+        <h3>name: {{ university.name }}</h3>
+        <br>
         <img src="{{ university.logo.url }}" width="250px">
-        <span>{{ university.location }}</span>
-        <span>university: {{ university.rank }}</span>
+        <br>
+        <span>location: {{ university.location }}</span>
+        <br>
+        <span>rank: {{ university.rank }}</span>
+        <br>
         <span>courses: </span>
         {% for course in courses %}
             <span>
@@ -17,6 +22,7 @@
                 {% endif %}
             </span>
         {% endfor %}
+        <br>
         <span>majors: </span>
         {% for major in majors %}
             <span>
@@ -26,5 +32,6 @@
                 {% endif %}
             </span>
         {% endfor %}
+        <hr>
     </div>
 {% endblock %}
