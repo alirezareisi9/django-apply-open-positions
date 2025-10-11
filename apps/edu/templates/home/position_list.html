@@ -2,6 +2,12 @@
 {% block title %}Positions{% endblock %}
 {% block body %}
     <h1>Position List</h1>
+    <form method="get">
+        {{ filter.form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+    <hr>
+    <hr>
     <ul>
         {% for position in positions %}
             <li>

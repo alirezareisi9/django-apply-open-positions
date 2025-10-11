@@ -2,6 +2,10 @@
 {% block title %}Professors{% endblock %}
 {% block body %}
     <h1>Professor List</h1>
+    <form method="get">
+        {{ filter.form.as_p }}
+        <button type="submit">Search</button>
+    </form>
     <ul>
         {% for professor in professors %}
             <li>

@@ -2,6 +2,11 @@
 {% block title %}Universities{% endblock %}
 {% block body %}
     <h1>University List</h1>
+    <form method="get">
+        {{ filter.form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+
     <ul>
         {% for university in universities %}
             <li>

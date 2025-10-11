@@ -1,18 +1,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from . import models
 from django.contrib.auth.models import User
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django_filters.views import FilterView
+from . import models
 from . import filters
 
 
-class PositionListView(ListView):
+class PositionListView(FilterView):
     model = models.Position
     context_object_name = "positions"
+    filterset_class = filters.PositionFilter
     paginate_by = 12
 
     def get_queryset(self):
-        return self.model.objects.all().order_by('-posted_date')
+        qs = super().get_queryset()
+        qs = qs.select_related('university', 'professor', 'major').order_by('-posted_date')
+        return qs.distinct()
 
 
 class PositionDetailView(DetailView):
@@ -20,13 +24,16 @@ class PositionDetailView(DetailView):
     context_object_name = "position"
 
 
-class UniversityListView(ListView):
+class UniversityListView(FilterView):
     model = models.University
     context_object_name = "universities"
+    filterset_class = filters.UniversityFilter
     paginate_by = 12
 
     def get_queryset(self):
-        return self.model.objects.all()
+        qs = super().get_queryset()
+        qs.prefetch_related('courses', 'majors').order_by('rank').distinct()
+        return qs
 
 
 class UniversityDetailView(DetailView):
@@ -42,13 +49,16 @@ class UniversityDetailView(DetailView):
         return context
 
 
-class ProfessorListView(ListView):
+class ProfessorListView(FilterView):
     model = models.Professor
+    filterset_class = filters.ProfessorFilter
     context_object_name = "professors"
     paginate_by = 12
 
     def get_queryset(self):
-        return self.model.objects.all()
+        qs = super().get_queryset()
+        qs = qs.select_related('university').prefetch_related('fields').order_by('university__rank').distinct()
+        return qs
 
 
 class ProfessorDetailView(DetailView):
@@ -63,20 +73,16 @@ class ProfessorDetailView(DetailView):
         return context
 
 
-class PublicationListView(ListView):
+class PublicationListView(FilterView):
     model = models.Publication
+    filterset_class = filters.PublicationFilter
     context_object_name = "publications"
     paginate_by = 12
 
     def get_queryset(self):
-        return self.model.objects.all()
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-
-    #     context["authors"] = self.object.authors.all()
-
-    #     return context
+        qs = super().get_queryset()
+        qs = qs.prefetch_related('authors').order_by('authors__last_name').distinct()
+        return qs
 
 
 class PublicationDetailView(DetailView):
@@ -91,20 +97,17 @@ class PublicationDetailView(DetailView):
         return context
 
 
-class CourseListView(ListView):
+class CourseListView(FilterView):
     model = models.Course
+    filterset_class = filters.CourseFilter
     context_object_name = "courses"
     paginate_by = 12
 
     def get_queryset(self):
-        return self.model.objects.all()
+        qs = super().get_queryset()
+        qs = qs.select_related('major').prefetch_related('professors').order_by('professors__last_name')
+        return qs
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-
-    #     context["professors"] = self.object.professors.all()
-
-    #     return context
 
 
 class CourseDetailView(DetailView):
