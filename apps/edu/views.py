@@ -15,7 +15,9 @@ class PositionListView(FilterView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qs = qs.select_related('university', 'professor', 'major').order_by('-posted_date')
+        qs = qs.select_related("university", "professor", "major").order_by(
+            "-posted_date"
+        )
         return qs.distinct()
 
 
@@ -32,7 +34,7 @@ class UniversityListView(FilterView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qs.prefetch_related('courses', 'majors').order_by('rank').distinct()
+        qs.prefetch_related("courses", "majors").order_by("rank").distinct()
         return qs
 
 
@@ -57,7 +59,12 @@ class ProfessorListView(FilterView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qs = qs.select_related('university').prefetch_related('fields').order_by('university__rank').distinct()
+        qs = (
+            qs.select_related("university")
+            .prefetch_related("fields")
+            .order_by("university__rank")
+            .distinct()
+        )
         return qs
 
 
@@ -81,7 +88,7 @@ class PublicationListView(FilterView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qs = qs.prefetch_related('authors').order_by('authors__last_name').distinct()
+        qs = qs.prefetch_related("authors").order_by("authors__last_name").distinct()
         return qs
 
 
@@ -105,9 +112,12 @@ class CourseListView(FilterView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qs = qs.select_related('major').prefetch_related('professors').order_by('professors__last_name')
+        qs = (
+            qs.select_related("major")
+            .prefetch_related("professors")
+            .order_by("professors__last_name")
+        )
         return qs
-
 
 
 class CourseDetailView(DetailView):

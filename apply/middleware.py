@@ -18,11 +18,11 @@ class CustomAuthenticationMiddleware:
             # admin
             "/admin/login/",
             # blog
-            "/blog/posts/",
-            "/blog/categories/",
-            "/blog/tags/",
+            "/blog/",
+            # edu
+            "/home/",
             # ckeditor
-            '/ckeditor/upload/'
+            '/ckeditor/upload/',
             # accounts
             # reverse('accounts:login'),
             # reverse('accounts:register'),
