@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Courses{% endblock %}
+{% block body %}
+<h1>Course List</h1>
+<form method="get">
+    {{ filter.form.as_p }}
+    <button type="submit">Search</button>
+</form>
+<div>
+    <ul>
+        {% for course in courses %}
+        <li>
+            <a href="{{ course.get_absolute_url }}">
+                <h3>title: {{ course.title }}</h3>
+                <br>
+                <span>major: {{ course.major.title }}</span>
+                <br>
+                <span>lesson name: {{ course.lesson_name }}</span>
+                <br>
+                <span>professors: </span>
+                {% with professors=course.professors.all %}
+                {% for professor in professors %}
+                <span>
+                    <a href="{{ professor.get_absolute_url }}">
+                        {{ professor.first_name }} {{ professor.last_name }}
+                    </a>
+                    {% if not forloop.last %}
+                    <span>, </span>
+                    {% endif %}
+                </span>
+                {% endfor %}
+                {% endwith %}
+                <br>
+                <span>is accessible: {{ course.is_accessible }}</span>
+            </a>
+        </li>
+        <hr>
+        {% empty %}
+        <h3>There are no course on the site now</h3>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

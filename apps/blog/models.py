@@ -36,7 +36,7 @@ class Category(models.Model):
         return False
 
     def get_absolute_url(self):
-        return reverse("blog:category_detail", kwargs={"slug": self.slug})
+        return reverse("blog:category-detail", kwargs={"slug": self.slug})
 
 
 class Post(models.Model):
@@ -57,4 +57,4 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("blog:post_detail", args=[self.slug])
+        return reverse("blog:post-detail", args=[self.slug])

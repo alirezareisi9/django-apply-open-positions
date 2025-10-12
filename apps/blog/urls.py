@@ -11,32 +11,32 @@ urlpatterns = [
     re_path(
         r"^posts/$",
         views.PostListView.as_view(template_name="blog/post_list.html"),
-        name="post_list",
+        name="post-list",
     ),
     re_path(
         r"^posts/(?P<slug>[\w\d-]+)/$",
         views.PostDetailView.as_view(template_name="blog/post_detail.html"),
-        name="post_detail",
+        name="post-detail",
     ),
     re_path(
         r"^categories/$",
         views.CategoryListView.as_view(template_name="blog/category_list.html"),
-        name="category_list",
+        name="category-list",
     ),
     re_path(
         r"^categories/(?P<slug>[\w\d-]+)/$",
         views.CategoryDetailView.as_view(template_name="blog/category_detail.html"),
-        name="category_detail",
+        name="category-detail",
     ),
     re_path(
         r"^tags/$",
         views.TagListView.as_view(template_name="blog/tag_list.html"),
-        name="tag_list",
+        name="tag-list",
     ),
     re_path(
         r"^tags/(?P<slug>[\w\d-]+)/$",
         views.TagDetailView.as_view(template_name="blog/tag_detail.html"),
-        name="tag_detail",
+        name="tag-detail",
     ),
 ]
 

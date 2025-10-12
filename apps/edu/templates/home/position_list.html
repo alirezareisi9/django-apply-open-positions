@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Positions{% endblock %}
+{% block body %}
+    <h1>Position List</h1>
+    <form method="get">
+        {{ filter.form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+    <hr>
+    <hr>
+    <ul>
+        {% for position in positions %}
+            <li>
+                <a href="{{ position.get_absolute_url }}">
+                    <h3>title: {{ position.title }}</h3>
+                    <br>
+                    <span>description: {{ position.description|truncatechars:25 }}</span>
+                    <br>
+                    <span>university: </span>
+                    <a href="{{ position.university.get_absolute_url }}">{{ position.university.name }}</a>
+                    
+                    <br>
+                    <span>professor: </span>
+                    <a href="{{ position.professor.get_absolute_url }}">{{ position.professor.first_name }} {{ position.professor.last_name }}</a>
+                    <p>is open: {{ position.is_open }}</p>
+                </a>
+            </li>
+            <hr>
+        {% empty %}
+            <h3>There are no position on the site now</h3>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Professor Details{% endblock %}
+{% block body %}
+    <h2>Professor Details</h2>
+    <div>
+        <h3>name: {{ professor.first_name }} {{ professor.last_name }}</h3>
+        <br>
+        <span>email: {{ professor.email }}</span>
+        <br>
+        <span>phone: {{ professor.phone }}</span>
+        <br>
+        <span>bio: {{ professor.biography }}</span>
+        <br>
+        {% if professor.photo %}
+            <img src="{{ professor.photo.url }}" width="250px">
+        {% endif %}
+        <br>
+        <span>rank: {{ professor.rank }}</span>
+        <br>
+        <span>research interests: {{ professor.research_interests }}</span>
+        <br>
+        <span>fields: </span>
+        {% for field in fields %}
+            <span>
+                {{ field.title }}
+                {% if not forloop.last %}
+                <span>, </span>
+                {% endif %}
+            </span>
+        {% endfor %}
+        <br>
+        <span>university: </span>
+        <a href="{{ professor.university.get_absolute_url }}">
+            <span>{{ professor.university.name }}</span>
+        </a>
+        <br>
+        <span>department: {{ professor.department }}</span>
+        <br>
+        <span>awards and honors: {{ professor.awards_and_honors }}</span>
+        <br>
+        <span>department: {{ professor.department }}</span>
+        <hr>
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Position Details{% endblock %}
+{% block body %}
+<h2>Position Details</h2>
+<div>
+    <h3>title: {{ position.title }}</h3>
+    <hr>
+    <span>description: {{ position.description|truncatechars:25 }}</span>
+    <hr>
+    <span>university: </span>
+    <a href="{{ position.university.get_absolute_url }}">
+        <span>{{ position.university.name }}</span>
+    </a>
+    <hr>
+    <span>professor: </span>
+    <a href="{{ position.professor.get_absolute_url }}">
+        <span>{{ position.professor.name }}</span>
+    </a>
+    <hr>
+    <p>major: {{ position.major.title }}</p>
+    <hr>
+    <p>posted date: {{ position.posted_date }}</p>
+    <hr>
+    <p>deadline: {{ position.deadline }}</p>
+    <hr>
+    <p>is open: {{ position.is_open }}</p>
+    <hr>
+</div>
+{% endblock %}
