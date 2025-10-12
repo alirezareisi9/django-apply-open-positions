@@ -3,21 +3,41 @@ from django.test import TestCase
 from django.urls import reverse, resolve
 from django.core.files.uploadedfile import SimpleUploadedFile
 from apps.edu.views import (
-    PositionListView, PositionDetailView, UniversityListView, ProfessorListView, CourseListView, PublicationListView, UniversityDetailView, ProfessorDetailView, CourseDetailView, PublicationDetailView, 
+    PositionListView,
+    PositionDetailView,
+    UniversityListView,
+    ProfessorListView,
+    CourseListView,
+    PublicationListView,
+    UniversityDetailView,
+    ProfessorDetailView,
+    CourseDetailView,
+    PublicationDetailView,
 )
 from apps.edu.models import (
-    Position, University, Professor, Major, Authorship, Course, Education, Teaching, UniversityCourse, UniversityImage, Publication, Field,
+    Position,
+    University,
+    Professor,
+    Major,
+    Authorship,
+    Course,
+    Education,
+    Teaching,
+    UniversityCourse,
+    UniversityImage,
+    Publication,
+    Field,
 )
 
 
 class PositionListViewTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.position_list_url = reverse('edu:position-list')
+        cls.position_list_url = reverse("edu:position-list")
 
     def setUp(self):
         self.response = self.client.get(self.position_list_url)
-    
+
     def test_position_list_accessible(self):
         self.assertEqual(self.response.status_code, 200)
 
@@ -35,11 +55,11 @@ class PositionListViewTests(TestCase):
 class UniversityListViewTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.university_list_url = reverse('edu:university-list')
+        cls.university_list_url = reverse("edu:university-list")
 
     def setUp(self):
         self.response = self.client.get(self.university_list_url)
-    
+
     def test_university_list_accessible(self):
         self.assertEqual(self.response.status_code, 200)
 
@@ -57,11 +77,11 @@ class UniversityListViewTests(TestCase):
 class ProfessorListViewTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.professor_list_url = reverse('edu:professor-list')
+        cls.professor_list_url = reverse("edu:professor-list")
 
     def setUp(self):
         self.response = self.client.get(self.professor_list_url)
-    
+
     def test_professor_list_accessible(self):
         self.assertEqual(self.response.status_code, 200)
 
@@ -79,11 +99,11 @@ class ProfessorListViewTests(TestCase):
 class CourseListViewTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.course_list_url = reverse('edu:course-list')
+        cls.course_list_url = reverse("edu:course-list")
 
     def setUp(self):
         self.response = self.client.get(self.course_list_url)
-    
+
     def test_course_list_accessible(self):
         self.assertEqual(self.response.status_code, 200)
 
@@ -101,11 +121,11 @@ class CourseListViewTests(TestCase):
 class PublicationListViewTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.publication_list_url = reverse('edu:publication-list')
+        cls.publication_list_url = reverse("edu:publication-list")
 
     def setUp(self):
         self.response = self.client.get(self.publication_list_url)
-    
+
     def test_publication_list_accessible(self):
         self.assertEqual(self.response.status_code, 200)
 
@@ -187,12 +207,19 @@ class DetailViewsTests(TestCase):
             graduation_year=2000,
         )
 
-        cls.position_url = reverse('edu:position-detail', kwargs={'pk': cls.position.id})
-        cls.university_url = reverse('edu:university-detail', kwargs={'pk': cls.university.id})
-        cls.professor_url = reverse('edu:professor-detail', kwargs={'pk': cls.professor.id})
-        cls.course_url = reverse('edu:course-detail', kwargs={'pk': cls.course.id})
-        cls.publication_url = reverse('edu:publication-detail', kwargs={'pk': cls.publication.id})
-
+        cls.position_url = reverse(
+            "edu:position-detail", kwargs={"pk": cls.position.id}
+        )
+        cls.university_url = reverse(
+            "edu:university-detail", kwargs={"pk": cls.university.id}
+        )
+        cls.professor_url = reverse(
+            "edu:professor-detail", kwargs={"pk": cls.professor.id}
+        )
+        cls.course_url = reverse("edu:course-detail", kwargs={"pk": cls.course.id})
+        cls.publication_url = reverse(
+            "edu:publication-detail", kwargs={"pk": cls.publication.id}
+        )
 
     def setUp(self):
         self.position_response = self.client.get(self.position_url)
@@ -209,7 +236,9 @@ class DetailViewsTests(TestCase):
         self.assertTemplateUsed(self.position_response, "home/position_detail.html")
 
     def test_position_detail_does_not_contain_incorrect_html(self):
-        self.assertNotContains(self.position_response, "Hi there! I should not be on the page.")
+        self.assertNotContains(
+            self.position_response, "Hi there! I should not be on the page."
+        )
 
     def test_position_detail_url_resolves_position_detail_view(self):
         view = resolve(self.position_url)
@@ -223,7 +252,9 @@ class DetailViewsTests(TestCase):
         self.assertTemplateUsed(self.university_response, "home/university_detail.html")
 
     def test_university_detail_does_not_contain_incorrect_html(self):
-        self.assertNotContains(self.university_response, "Hi there! I should not be on the page.")
+        self.assertNotContains(
+            self.university_response, "Hi there! I should not be on the page."
+        )
 
     def test_university_detail_url_resolves_university_detail_view(self):
         view = resolve(self.university_url)
@@ -237,7 +268,9 @@ class DetailViewsTests(TestCase):
         self.assertTemplateUsed(self.professor_response, "home/professor_detail.html")
 
     def test_professor_detail_does_not_contain_incorrect_html(self):
-        self.assertNotContains(self.professor_response, "Hi there! I should not be on the page.")
+        self.assertNotContains(
+            self.professor_response, "Hi there! I should not be on the page."
+        )
 
     def test_professor_detail_url_resolves_professor_detail_view(self):
         view = resolve(self.professor_url)
@@ -251,7 +284,9 @@ class DetailViewsTests(TestCase):
         self.assertTemplateUsed(self.course_response, "home/course_detail.html")
 
     def test_course_detail_does_not_contain_incorrect_html(self):
-        self.assertNotContains(self.course_response, "Hi there! I should not be on the page.")
+        self.assertNotContains(
+            self.course_response, "Hi there! I should not be on the page."
+        )
 
     def test_course_detail_url_resolves_course_detail_view(self):
         view = resolve(self.course_url)
@@ -262,10 +297,14 @@ class DetailViewsTests(TestCase):
         self.assertEqual(self.publication_response.status_code, 200)
 
     def test_publication_detail_template(self):
-        self.assertTemplateUsed(self.publication_response, "home/publication_detail.html")
+        self.assertTemplateUsed(
+            self.publication_response, "home/publication_detail.html"
+        )
 
     def test_publication_detail_does_not_contain_incorrect_html(self):
-        self.assertNotContains(self.publication_response, "Hi there! I should not be on the page.")
+        self.assertNotContains(
+            self.publication_response, "Hi there! I should not be on the page."
+        )
 
     def test_publication_detail_url_resolves_publication_detail_view(self):
         view = resolve(self.publication_url)
