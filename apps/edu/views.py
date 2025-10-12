@@ -34,8 +34,8 @@ class UniversityListView(FilterView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qs.prefetch_related("courses", "majors").order_by("rank").distinct()
-        return qs
+        qs.prefetch_related("courses", "majors").order_by("name")
+        return qs.distinct()
 
 
 class UniversityDetailView(DetailView):
