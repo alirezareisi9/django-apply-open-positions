@@ -7,6 +7,7 @@ from apps.blog.models import Post, Category
 
 User = get_user_model()
 
+
 class PostTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -18,7 +19,7 @@ class PostTests(TestCase):
         )
         self.html_content = "<p>Hello <strong>world</strong>!</p>"
         self.post = Post.objects.create(
-            title='11', slug='11', image=self.image, content=self.html_content
+            title="11", slug="11", image=self.image, content=self.html_content
         )
         self.post.tags.add("1", "11")
         self.post.categories.add(self.category)
@@ -26,14 +27,13 @@ class PostTests(TestCase):
 
     def test_object(self):
         self.assertIn(self.category, self.post.categories.all())
-        self.assertEqual(self.post.title, '11')
-        self.assertEqual(self.post.slug, '11')
-        
+        self.assertEqual(self.post.title, "11")
+        self.assertEqual(self.post.slug, "11")
+
         self.post.image.open()
         self.assertEqual(self.post.image.read(), b"content file here")
         self.post.image.close()
-        
-    
+
     def test_tags_are_saved_and_retrieved(self):
         tags = self.post.tags.names()
         self.assertEqual(set(tags), {"1", "11"})
@@ -42,9 +42,11 @@ class PostTests(TestCase):
         self.assertEqual(self.post.content, self.html_content)
 
     def test_rich_text_image(self):
-        staff = User.objects.create_superuser(email='test@gmail.com', password='qwertyuiop12345678')
+        staff = User.objects.create_superuser(
+            email="test@gmail.com", password="qwertyuiop12345678"
+        )
 
-        self.client.login(email=staff.email, password='qwertyuiop12345678')
+        self.client.login(email=staff.email, password="qwertyuiop12345678")
 
         image = SimpleUploadedFile(
             "test.jpg", b"content is here", content_type="image/jpeg"
